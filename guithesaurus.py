@@ -5,7 +5,7 @@ root = Tk()
 def New():
 	message_text = "Willkommen auf unserem ersten Thesaurus Versuch!"
 	msg = Message (root, text=message_text).pack()
-	
+
 def Suche():
 	Label(root, text="Suche").grid(row=0)
 	entry_suche = Entry(root)
@@ -22,7 +22,7 @@ def NewDeskriptor():
 	entry_unterbegriff.grid(row=1, column=1)
 	entry_verwandterbegriff = Entry(root)
 	entry_verwandterbegriff.grid(row=2, column=1)
-	Button(root, text='Speichern',).grid(row=4)	
+	Button(root, text='Speichern',).grid(row=4)
 
 # Main Menu
 menu = Menu(root)

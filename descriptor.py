@@ -1,6 +1,4 @@
-# deskriptor menu
 from Tkinter import *
-
 root = Tk()
 menu = Menu(root)
 root.config(menu=menu)
@@ -24,5 +22,4 @@ menu.add_cascade(label="Deskriptor", menu=helpmenu)
 helpmenu.add_command(label="hinzufuegen")
 helpmenu.add_command(label="bearbeiten")
 helpmenu.add_command(label="loeschen")
-
 root.mainloop()

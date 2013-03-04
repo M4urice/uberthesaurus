@@ -1,3 +1,4 @@
 uberthesaurus.sublime-project
 uberthesaurus.sublime-workspace
 *.pyc
+.DS_Store

@@ -2,6 +2,7 @@ from Tkinter import *
 from tkFileDialog import askopenfilename
 
 root = Tk()
+<<<<<<< HEAD
 # klasse machen: vergessen alle was gezeichnet wurde dann neu
 
 
@@ -10,6 +11,11 @@ root = Tk()
 #def New():
 	
 	
+=======
+def New():
+	message_text = "Willkommen auf unserem ersten Thesaurus Versuch!"
+	msg = Message (root, text=message_text).pack()
+>>>>>>> 82689c59c90eca435a2c89ea33c8d10cf8876645
 
 def Suche():
 	label_ober.grid_forget()
@@ -75,7 +81,11 @@ filemenu.add_command(label="Import")
 filemenu.add_command(label="Export")
 filemenu.add_command(label="Oeffnen", command=openfile)
 filemenu.add_command(label="Speichern")
+<<<<<<< HEAD
 filemenu.add_command(label="Schliessen", command=root.quit)
+=======
+filemenu.add_command(label="Schliessen", command=sys.exit)
+>>>>>>> 82689c59c90eca435a2c89ea33c8d10cf8876645
 # Deskrptor Menu
 desmenu = Menu(menu)
 menu.add_cascade(label="Deskritpor", menu=desmenu)

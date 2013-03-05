@@ -14,21 +14,21 @@ class Descriptorset(object):
         return self.dict
 
     def add_term(self, term, rel):
-        if rel in self.dict.keys():
-            if term not in self.dict[rel]:
-                self.dict[rel].append(term)
-                return True
-            else:
-                return False
-        else:
-            self.dict[rel] = [term]
-            return True
+		if term not in self.dict.values():
+			if rel in self.dict.keys():
+				self.dict[rel].append(term)
+			else:
+				self.dict[rel] = [term]
+			return True
+		else:
+			return False
+			#print "Dieser Term existiert schon im Deskriptorsatz für " + self._name + "."
 
     def edit_term(self, rel, term, newterm):
         # for elem in self.dict[rel]:
-        #     print "edit:" + elem
-        #     if elem == term:
-        #         self.dict[rel][self.dict[rel].index(elem)] = newterm
+        # print "edit:" + elem
+        # if elem == term:
+        # self.dict[rel][self.dict[rel].index(elem)] = newterm
         for n, elem in enumerate(self.dict[rel]):
             if elem == term:
                 self.dict[rel][n] = newterm

@@ -18,7 +18,7 @@ class Descriptorset(object):
 			self.dict[rel] = [term]
 			print "hey"
 		else:
-			for elem in self.dict.values(): # geht das ueberhaupt?
+			for elem in self.dict.values(): # for schleife muss gestoppt werden!
 				print self.dict
 				if term not in elem:
 					print "pups"
@@ -31,7 +31,8 @@ class Descriptorset(object):
 							#return False
 						else:
 							if rel in self.dict.keys():
-								self.dict[rel].append(term)
+								if term not in self.dict[rel]:
+									self.dict[rel].append(term)
 							else:
 								self.dict[rel] = [term]
 							#return True

@@ -15,9 +15,14 @@ class Descriptorset(object):
 
     def add_term(self, term, rel):
         if rel in self.dict.keys():
-            self.dict[rel].append(term)
+            if term not in self.dict[rel]:
+                self.dict[rel].append(term)
+                return True
+            else:
+                return False
         else:
             self.dict[rel] = [term]
+            return True
 
     def edit_term(self, rel, term, newterm):
         # for elem in self.dict[rel]:
@@ -36,11 +41,25 @@ class Descriptorset(object):
         self.remove_term(rel, term)
         self.add_term(term, newrel)
 
-descriptorset1 = Descriptorset("Auto")
+#################################################
 
-descriptorset1.add_term("Brumm", "VB")
-descriptorset1.add_term("Toeff", "VB")
-descriptorset1.edit_term("VB", "Toeff", "Tut")
-descriptorset1.remove_term("VB", "Tut")
-descriptorset1.edit_rel("VB", "Brumm", "OB")
-print descriptorset1.get_terms()
+
+dsetdict = {}
+
+
+def create_dset(setname):
+    if setname not in dsetdict.keys():
+        dsetdict[setname] = Descriptorset(setname)
+    else:
+        print "Deskriptorset " + setname + " gibt es schon"
+
+
+
+
+create_dset("Bla")
+create_dset("Blub")
+create_dset("Bubu")
+create_dset("Bubu")
+print dsetdict.keys()
+dsetdict["Bla"].add_term("Lala", "VB")
+print dsetdict["Bla"].get_terms()

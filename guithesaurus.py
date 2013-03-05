@@ -1,7 +1,6 @@
 from Tkinter import *
 
 root = Tk()
-
 def New():
 	message_text = "Willkommen auf unserem ersten Thesaurus Versuch!"
 	msg = Message (root, text=message_text).pack()
@@ -34,7 +33,7 @@ filemenu.add_command(label="Import")
 filemenu.add_command(label="Export")
 filemenu.add_command(label="Oeffnen")
 filemenu.add_command(label="Speichern")
-filemenu.add_command(label="Schliessen")
+filemenu.add_command(label="Schliessen", command=sys.exit)
 # Deskrptor Menu
 desmenu = Menu(menu)
 menu.add_cascade(label="Deskritpor", menu=desmenu)

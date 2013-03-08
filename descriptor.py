@@ -92,4 +92,7 @@ add("Yolo", "Totally", "OB")
 print dsetdict["Yolo"].get_terms()
 
 
-print
+for elem in dsetdict:
+	print elem
+	
+print sorted(dsetdict)

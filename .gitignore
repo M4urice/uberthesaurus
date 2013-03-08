@@ -4,3 +4,6 @@ guitest.py
 desc_old.yp
 *.pyc
 .DS_Store
+*.json
+*.csv
+*.xml

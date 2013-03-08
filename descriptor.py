@@ -1,3 +1,5 @@
+import json, pickle, csv
+
 class Descriptorset(object):
 
 	def __init__(self, name):
@@ -18,7 +20,7 @@ class Descriptorset(object):
 			self.dict[rel] = [term]
 			return True
 		else:
-			for elem in self.dict.values(): 
+			for elem in self.dict.values():
 				if term not in elem:
 					if rel == "BS":
 						print "Es sind bereits Relationen vorhanden. Bitte editiere den Deskriptor."
@@ -56,12 +58,13 @@ class Descriptorset(object):
 		self.add_term(term, newrel)
 
 #################################################
-
+# TODO: move to new .py file
 
 dsetdict = {}
 
 
 def create_dset(setname):
+	"""This creates a new descriptorset which is added to the list dsetdict """
 	if setname not in dsetdict.keys():
 		dsetdict[setname] = Descriptorset(setname)
 	else:
@@ -70,13 +73,36 @@ def create_dset(setname):
 def add(name, term, rel):
 	if dsetdict[name].add_term(term, rel):
 		create_dset(term)
-	
 
+def export_dsets(format, filename):
+	"""This exports all elements of the list dsetdict to JSON, CSV or XML"""
+	tempdict = {}
+	# make a dict tempdict with str from objectdict dsetdict
+	for  elem in dsetdict:
+		tempdict[elem] = dsetdict[elem].get_terms()
+	# handle the export
+	if format == "JSON":
+		with open("%s.json"%filename,"w") as json_output:
+			json.dump(tempdict,json_output)
+	elif format == "CSV":
+		with open('%s.csv'%filename, 'w') as new_data:
+			writer = csv.writer(new_data, delimiter=';')
+			writer.writerows(tempdict)
+	elif format == "XML":
+		pass
+	else:
+		print "Fehler! Falsches Format!"
+
+def import_dsets():
+	"""This imports descriptorsets from JSON, CSV or XML"""
+	pass
+
+# Testing:
 
 create_dset("Bla")
 create_dset("Blub")
 create_dset("Bubu")
-print dsetdict.keys()
+#print dsetdict.keys()
 
 
 dsetdict["Bla"].add_term("Lala", "VB")
@@ -87,12 +113,13 @@ dsetdict["Bla"].add_term("No", "VB")
 
 
 add("Bla", "Yolo", "UB")
-print dsetdict["Bla"].get_terms()
+#print dsetdict["Bla"].get_terms()
 add("Yolo", "Totally", "OB")
-print dsetdict["Yolo"].get_terms()
+#print dsetdict["Yolo"].get_terms()
+export_dsets("JSON","lol")
+export_dsets("CSV","lol")
 
+#for elem in dsetdict:
+#	print elem
 
-for elem in dsetdict:
-	print elem
-	
-print sorted(dsetdict)
+#print sorted(dsetdict)

@@ -81,40 +81,42 @@ def export_dsets(format, filename):
 	for  elem in dsetdict:
 		tempdict[elem] = dsetdict[elem].get_terms()
 	# handle the export
+	print tempdict
 	if format == "JSON":
 		with open("%s.json"%filename,"w") as json_output:
 			json.dump(tempdict,json_output)
+	#problem:
 	elif format == "CSV":
-		with open('%s.csv'%filename, 'w') as new_data:
-			writer = csv.writer(new_data, delimiter=';')
-			writer.writerows(tempdict)
+			with open('%s.csv'%filename, 'w') as new_data:
+				print elem
+				writer = csv.writer(new_data, delimiter=";")
+				writer.writerow(tempdict.keys())
+				writer.writerow(tempdict.values())
 	elif format == "XML":
 		pass
 	else:
 		print "Fehler! Falsches Format!"
-
 def import_dsets():
 	"""This imports descriptorsets from JSON, CSV or XML"""
 	pass
 
 # Testing:
 
-create_dset("Bla")
-create_dset("Blub")
-create_dset("Bubu")
+create_dset("Auto")
+create_dset("Esel")
+create_dset("Fahrrad")
 #print dsetdict.keys()
 
 
-dsetdict["Bla"].add_term("Lala", "VB")
-dsetdict["Bla"].add_term("Lala", "UB")
-dsetdict["Bla"].add_term("Yo", "UB")
-dsetdict["Bla"].add_term("No", "VB")
-#print dsetdict["Bla"].add_term("Yes", "OB")
+dsetdict["Fahrrad"].add_term("Klingel", "VB")
+dsetdict["Fahrrad"].add_term("Fahrzeuge", "UB")
+dsetdict["Fahrrad"].add_term("Mofa", "VB")
+#print dsetdict["Fahrrad"].add_term("Yes", "OB")
 
 
-add("Bla", "Yolo", "UB")
-#print dsetdict["Bla"].get_terms()
-add("Yolo", "Totally", "OB")
+add("Fahrrad", "Fortbewegungsmittel", "UB")
+#print dsetdict["Fahrrad"].get_terms()
+add("Esel", "Fortbewegungsmittel", "OB")
 #print dsetdict["Yolo"].get_terms()
 export_dsets("JSON","lol")
 export_dsets("CSV","lol")

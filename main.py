@@ -1,4 +1,6 @@
 import json, csv
+from xml.etree.ElementTree import Element, SubElement, tostring
+from xml.dom.minidom import parseString
 from descriptor import Descriptorset
 dsetdict = {}
 
@@ -36,7 +38,18 @@ def export_dsets(format, filename):
 				writer.writerow(tempdict.keys())
 				writer.writerow(tempdict.values())
 	elif format == "XML":
-		pass
+		xmldsetdict = Element( "Deskriptorsets")
+		for name, terms in tempdict.iteritems():
+			xmldset = SubElement(xmldsetdict, name)
+			for elem in terms:
+				xmlelem = SubElement(xmldset, elem)
+				xmlelem.text=""
+				for elm in terms[elem]:
+					xmlelem.text +=elm+", "
+		## print xml
+		xml = tostring(xmldsetdict)
+		dom = parseString(xml)
+		print dom.toprettyxml('    ')
 	else:
 		print "Fehler! Unbekanntes Format!"
 
@@ -56,7 +69,6 @@ def import_dsets(format, filename):
 				values= reader.next()
 				for elem in range(len(keys)):
 					data[keys[elem]]=values[elem]
-				print data
 	elif format == "XML":
 		pass
 	else:
@@ -81,6 +93,7 @@ if __name__ == '__main__':
 	#print dsetdict["Yolo"].get_terms()
 	#export_dsets("JSON", "lol")
 	#export_dsets("CSV", "lol")
+	export_dsets("XML", "lol")
 	import_dsets("JSON", "lol")
 	import_dsets("CSV", "lol")
 	#for elem in dsetdict:

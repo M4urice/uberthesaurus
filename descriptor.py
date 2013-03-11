@@ -7,15 +7,19 @@ class Descriptorset(object):
 		self.dict = {}
 
 	def get_name(self):
+	"""Returns the name of the descriptorset."""
 		return self._name
 
 	def set_name(self, newname):
+	"""Replaces the old name with a new one."""
 		self._name = newname
 
 	def get_terms(self):
+	"""Returns the descriptor-dictionary with its terms and relations.""" 
 		return self.dict
 
 	def add_term(self, term, rel):
+	"""Adds a new term to a set if it doesnt exist already and if the rules of the thesaurus are met. Also returns True if the term was added successfully."""
 		if len(self.dict) == 0:
 			self.dict[rel] = [term]
 			return True
@@ -41,6 +45,7 @@ class Descriptorset(object):
 					return False
 
 	def edit_term(self, rel, term, newterm):
+	"""Replaces the old term with the corrected term."""
 		# for elem in self.dict[rel]:
 		# print "edit:" + elem
 		# if elem == term:
@@ -50,10 +55,13 @@ class Descriptorset(object):
 				self.dict[rel][n] = newterm
 
 	def remove_term(self, rel, term):
+	"""This removes a term from the descriptorset."""
 		if rel in self.dict.keys():
 			self.dict[rel].remove(term)
+			# to do: delete term in other sets.
 
 	def edit_rel(self, rel, term, newrel):
+	"""Used to edit a relation of a term. It removes the term from the old relation and adds it to the correct one."""
 		self.remove_term(rel, term)
 		self.add_term(term, newrel)
 
@@ -71,6 +79,7 @@ def create_dset(setname):
 		print "Deskriptorset " + setname + " gibt es schon"
 
 def add(name, term, rel):
+	"""This forwards its variables to add_term and also checks whether a new term has been created successfully. If so, it will create a set for the new term."""
 	if dsetdict[name].add_term(term, rel):
 		create_dset(term)
 

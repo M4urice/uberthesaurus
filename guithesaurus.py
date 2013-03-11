@@ -8,7 +8,7 @@ class MyApp:
 		self.myParent = parent
 		self.myContainer1 = Frame(parent)
 		self.myContainer1.pack()
-		
+
 		#Label
 		#label_ober=Label(root, text="Oberbegriff")
 		#label_unter=Label(root, text="Unterbegriff")
@@ -29,8 +29,8 @@ class MyApp:
 		#speichern_button=Button(root, text='Speichern')
 		#suchen_button=Button(root, text='Suchen')
 		#einfueg_button=Button(root, text="Einfuegen")
-		
-		
+
+
 		# Menu
 		menu = Menu(root)
 		root.config(menu=menu)
@@ -58,6 +58,8 @@ class MyApp:
 
 	def suche(self):
 		self.myContainer1.destroy()
+		self.myContainer1 = Frame(root)
+		self.myContainer1.pack()
 		self.label_suche = Label(self.myContainer1, text="Suche:")
 		self.label_suche.grid(row=0)
 		self.entry_suche = Entry(self.myContainer1)

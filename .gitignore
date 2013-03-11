@@ -1,6 +1,7 @@
 uberthesaurus.sublime-project
 uberthesaurus.sublime-workspace
 guitest.py
+geany_run_script.bat
 desc_old.yp
 *.pyc
 .DS_Store

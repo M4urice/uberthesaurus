@@ -46,14 +46,17 @@ def import_dsets(format, filename):
 	if format == "JSON":
 		with open("%s.json"%filename,"r") as json_input:
 			data = json.load(json_input)
-			return data
+			#print "JSON: ", data
 	elif format == "CSV":
 		data = {}
 		with open('%s.csv'%filename, 'r') as csv_input:
 			reader = csv.reader(csv_input, delimiter=";")
 			for row in reader:
-				pass
-			return data
+				keys = row
+				values= reader.next()
+				for elem in range(len(keys)):
+					data[keys[elem]]=values[elem]
+				print data
 	elif format == "XML":
 		pass
 	else:
@@ -74,12 +77,12 @@ if __name__ == '__main__':
 
 	add("Fahrrad", "Fortbewegungsmittel", "UB")
 	#print dsetdict["Fahrrad"].get_terms()
-	add("Esel", "Fortbewegungsmittel", "OB")
+	#add("Esel", "Fortbewegungsmittel", "OB")
 	#print dsetdict["Yolo"].get_terms()
-	export_dsets("JSON", "lol")
-	export_dsets("CSV", "lol")
-	print import_dsets("JSON", "lol")
-	print import_dsets("CSV", "lol")
+	#export_dsets("JSON", "lol")
+	#export_dsets("CSV", "lol")
+	import_dsets("JSON", "lol")
+	import_dsets("CSV", "lol")
 	#for elem in dsetdict:
 	#	print elem
 

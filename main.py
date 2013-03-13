@@ -1,7 +1,9 @@
 import json, csv
+from Tkinter import *
 from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom.minidom import parseString
 from descriptor import Descriptorset
+from guithesaurus import MyApp
 dsetdict = {}
 
 
@@ -75,28 +77,28 @@ def import_dsets(format, filename):
 		print "Fehler! Unbekanntes Format!"
 
 if __name__ == '__main__':
+
+	# DSET TESTS
 	create_dset("Auto")
 	create_dset("Esel")
 	create_dset("Fahrrad")
-	#print dsetdict.keys()
-
-
 	dsetdict["Fahrrad"]. add_term("Klingel", "VB")
 	dsetdict["Fahrrad"].add_term("Fahrzeuge", "UB")
 	dsetdict["Fahrrad"].add_term("Mofa", "VB")
 	#print dsetdict["Fahrrad"].add_term("Yes", "OB")
-
-
 	add("Fahrrad", "Fortbewegungsmittel", "UB")
-	#print dsetdict["Fahrrad"].get_terms()
-	#add("Esel", "Fortbewegungsmittel", "OB")
-	#print dsetdict["Yolo"].get_terms()
-	#export_dsets("JSON", "lol")
-	#export_dsets("CSV", "lol")
-	export_dsets("XML", "lol")
-	import_dsets("JSON", "lol")
-	import_dsets("CSV", "lol")
-	#for elem in dsetdict:
-	#	print elem
+	add("Esel", "Fortbewegungsmittel", "OB")
 
-	#print sorted(dsetdict)
+
+	# GUI TESTS
+	root = Tk()
+	myapp = MyApp(root, dsetdict)
+	root.mainloop()
+
+	# IMPORT/EXPORT
+	# export_dsets("JSON", "lol")
+	# export_dsets("CSV", "lol")
+	# export_dsets("XML", "lol")
+	# import_dsets("JSON", "lol")
+	# import_dsets("CSV", "lol")
+	# import_dsets("XML", "lol")

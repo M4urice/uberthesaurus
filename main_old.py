@@ -2,8 +2,8 @@ import json, csv
 from Tkinter import *
 from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom.minidom import parseString
-from descriptor import Descriptorset
-from guithesaurus import MyApp
+from descriptor import Descriptor
+from main import MyApp
 dsetdict = {}
 class descriptorset(object):
 	"""docstring for descriptorset"""

@@ -4,14 +4,14 @@ from xml.dom.minidom import parseString
 from descriptor import Descriptor
 
 class Thesaurus(object):
-	"""docstring for descriptorset"""
+	"""docstring for Thesaurus"""
 	def __init__(self, name):
 		self.name = name
 		self.thesaurus = {}
 
 
 	def create_dset(self, setname):
-		"""This creates a new descriptorset which is added to the dict "thesaurus" """
+		"""This creates a new descriptor which is added to the dict "thesaurus" """
 		if setname not in self.thesaurus.keys():
 			self.thesaurus[setname] = Descriptor(setname)
 		else:
@@ -60,7 +60,7 @@ class Thesaurus(object):
 
 
 	def import_dsets(self, format, filename):
-		"""This imports descriptorsets from JSON, CSV or XML and returns a dict"""
+		"""This imports thesauri from JSON, CSV or XML and returns a dict"""
 		if format == "JSON":
 			with open("%s.json"%filename,"r") as json_input:
 				data = json.load(json_input)

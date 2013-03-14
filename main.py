@@ -52,12 +52,12 @@ class MyApp():
 		filemenu = Menu(menu)
 		menu.add_cascade(label="Datei", menu=filemenu)
 		# Main Menu
-		filemenu.add_command(label="Neu", command=self.update_tlist)
+		filemenu.add_command(label="Neu")
 		filemenu.add_command(label="Import")
 		filemenu.add_command(label="Export")
 		filemenu.add_command(label="Oeffnen")
 		filemenu.add_command(label="Speichern")
-		filemenu.add_command(label="Schliessen", command=self.MyParent.destroy)
+		filemenu.add_command(label="Schliessen", command=self.exit_prog)
         # Deskrptor Menu
 		desmenu = Menu(menu)
 		menu.add_cascade(label="Deskritpor", menu=desmenu)
@@ -79,9 +79,9 @@ class MyApp():
 
 		self.t1.create_dset("Auto")
 		self.t1.create_dset("Fahrrad")
-		self.t1.thesaurus["Fahrrad"].add_term("Klingel", "VB")
-		self.t1.thesaurus["Fahrrad"].add_term("Fahrzeuge", "UB")
-		self.t1.thesaurus["Fahrrad"].add_term("Mofa", "VB")
+		self.t1.thesaurus["Auto"].add_term("Rad", "VB")
+		self.t1.thesaurus["Auto"].add_term("Fahrzeuge", "OB")
+		self.t1.thesaurus["Auto"].add_term("Lenkrad", "VB")
 		self.t1.create_dset("Esel")
 		self.t1.create_dset("Motorrad")
 		self.t1.create_dset("Skateboard")
@@ -93,16 +93,22 @@ class MyApp():
 
 
 	def update_dlist(self, dlist):
+		""" Updates the listbox for the descriptors"""
 		self.deslistbox.delete(0, END)
 		for elem in sorted(dlist):
 			self.deslistbox.insert(END, elem)
+		self.deslistbox.activate(1)
 
 	def update_tlist(self):
+		""" Updates the listbox for the relations and terms"""
 		if self.deslistbox.curselection()!=():
 			tlist=self.t1.thesaurus[self.deslistbox.get(self.deslistbox.curselection())].get_terms()
-			self.termlistbox.delete(0, END)
-			for key,val in sorted(tlist):
-				self.termlistbox.insert(END, key+val)
+		else:
+			tlist=self.t1.thesaurus[self.deslistbox.get(0)].get_terms()
+		self.termlistbox.delete(0, END)
+		print tlist
+		for key,value in tlist.iteritems():
+				self.termlistbox.insert(END, key+str(value))
 
 	def add_window(self):
 		pass
@@ -111,11 +117,13 @@ class MyApp():
 		pass
 
 	def del_des(self):
+		""" Deletes the selected element of the listbox for the descriptors"""
 		if self.deslistbox.curselection() != ():
 			self.deslistbox.delete(self.deslistbox.curselection())
 			#self.t1.thesaurus.removedes(self.deslistbox.index(self.deslistbox.curselection()))
 
 	def add_des(self,des):
+		""" Deletes the selected element of the listbox for the relations and terms"""
 		self.deslistbox.insert(END, des)
 
 	def edit_des(self):
@@ -128,6 +136,12 @@ class MyApp():
 		pass
 
 	def edit_term(self):
+		pass
+
+	def exit_prog(self):
+		self.save_thes()
+		self.MyParent.destroy()
+	def save_thes(self):
 		pass
 
 	def suche(self):

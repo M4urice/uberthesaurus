@@ -114,9 +114,9 @@ class MyApp():
 			else:
 				tlist=self.t1.entries[self.deslistbox.get(0)].get_terms()
 			self.termlistbox.delete(0, END)
-			print tlist
 			for key,value in tlist.iteritems():
-					self.termlistbox.insert(END, key+str(value))
+				for elem in value:
+					self.termlistbox.insert(END, key + " "+elem)
 
 	def add_window(self):
 		pass

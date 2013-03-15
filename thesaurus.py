@@ -7,32 +7,32 @@ class Thesaurus(object):
 	"""docstring for Thesaurus"""
 	def __init__(self, name):
 		self.name = name
-		self.thesaurus = {}
+		self.entries = {}
 
 
 	def create_dset(self, setname):
-		"""This creates a new descriptor which is added to the dict "thesaurus" """
-		if setname not in self.thesaurus.keys():
-			self.thesaurus[setname] = Descriptor(setname)
+		"""This creates a new descriptor which is added to the dict "entries" """
+		if setname not in self.entries.keys():
+			self.entries[setname] = Descriptor(setname)
 		else:
 			print "Deskriptorset " + setname + " gibt es schon"
 
 	def edit_dset(self, setname, newname):
 		"""Edits the name of a descriptorset."""
-		self.thesaurus[setname].set_name(newname)
-		#TODO edit setname in self.thesaurus
+		self.entries[setname].set_name(newname)
+		#TODO edit setname in self.entries
 
 	def add(self, name, term, rel):
 		"""This forwards its variables to add_term and also checks whether a new term has been created successfully. If so, it will create a set for the new term."""
-		if self.thesaurus[name].add_term(term, rel):
+		if self.entries[name].add_term(term, rel):
 			self.create_dset(term)
 
 	def export_thesaurus(self, format, filename):
-		"""This exports all elements of the dict "self.thesaurus" to JSON, CSV or XML"""
-		# make a dict tempdict with str from objectdict self.thesaurus
+		"""This exports all elements of the dict "self.entries" to JSON, CSV or XML"""
+		# make a dict tempdict with str from objectdict self.entries
 		tempdict = {}
-		for  elem in self.thesaurus:
-			tempdict[elem] = self.thesaurus[elem].get_terms()
+		for  elem in self.entries:
+			tempdict[elem] = self.entries[elem].get_terms()
 		# handle the export
 		if format == "JSON":
 			with open("%s.json"%filename,"w") as json_output:
@@ -43,23 +43,23 @@ class Thesaurus(object):
 					writer.writerow(tempdict.keys())
 					writer.writerow(tempdict.values())
 		elif format == "XML":
-			xmlthesaurus = Element( "Deskriptorsets")
+			xmlentries = Element( "Deskriptorsets")
 			for name, terms in tempdict.iteritems():
-				xmldset = SubElement(xmlthesaurus, name)
+				xmldset = SubElement(xmlentries, name)
 				for elem in terms:
 					xmlelem = SubElement(xmldset, elem)
 					xmlelem.text=""
 					for elm in terms[elem]:
 						xmlelem.text +=elm+", "
 			## print xml
-			xml = tostring(xmlthesaurus)
+			xml = tostring(xmlentries)
 			dom = parseString(xml)
 			print dom.toprettyxml('    ')
 		else:
 			print "Fehler! Unbekanntes Format!"
 
 
-	def import_dsets(self, format, filename):
+	def import_thesaurus(self, format, filename):
 		"""This imports thesauri from JSON, CSV or XML and returns a dict"""
 		if format == "JSON":
 			with open("%s.json"%filename,"r") as json_input:
@@ -86,11 +86,11 @@ if __name__ == '__main__':
 	t1.create_dset("Auto")
 	t1.create_dset("Esel")
 	t1.create_dset("Fahrrad")
-	t1.thesaurus["Fahrrad"].add_term("Klingel", "VB")
-	t1.thesaurus["Fahrrad"].add_term("Fahrzeuge", "UB")
-	t1.thesaurus["Fahrrad"].add_term("Mofa", "VB")
+	t1.entries["Fahrrad"].add_term("Klingel", "VB")
+	t1.entries["Fahrrad"].add_term("Fahrzeuge", "UB")
+	t1.entries["Fahrrad"].add_term("Mofa", "VB")
 	#no me gusta
-	print t1.thesaurus["Fahrrad"].add_term("Yes", "OB")
+	print t1.entries["Fahrrad"].add_term("Yes", "OB")
 	t1.add("Fahrrad", "Fortbewegungsmittel", "UB")
 	t1.add("Esel", "Fortbewegungsmittel", "OB")
 
@@ -100,6 +100,6 @@ if __name__ == '__main__':
 	t1.export_thesaurus("JSON", "lol")
 	t1.export_thesaurus("CSV", "lol")
 	t1.export_thesaurus("XML", "lol")
-	t1.import_dsets("JSON", "lol")
-	t1.import_dsets("CSV", "lol")
-	t1.import_dsets("XML", "lol")
+	t1.import_thesaurus("JSON", "lol")
+	t1.import_thesaurus("CSV", "lol")
+	t1.import_thesaurus("XML", "lol")

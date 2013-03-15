@@ -6,16 +6,26 @@ from tkFileDialog import asksaveasfile
 
 class MyApp():
 	def __init__(self, parent,thes=""):
+
 		#self.MyParent of MyApp
 		self.MyParent = parent
-		# 2 listboxes for des and terms
-		self.deslistbox = Listbox(self.MyParent)
-		self.termlistbox = Listbox(self.MyParent)
-		# a frame for changing elements
-		self.myContainer1 = Frame(self.MyParent)
+		# import a thesaurus if given as an argument or create an empty one
+		if thes is "":
+			self.t1=Thesaurus("Fahrzeugthesaurus")
+		else:
+			self.t1=thes
+
 		# scrollbars for the listboxes
 		scrollbar1 = Scrollbar(self.MyParent, orient=VERTICAL)
 		scrollbar2 = Scrollbar(self.MyParent, orient=VERTICAL)
+		# 2 listboxes for des and terms
+		self.deslistbox = Listbox(self.MyParent, yscrollcommand=scrollbar1.set, exportselection=0)
+		self.termlistbox = Listbox(self.MyParent, yscrollcommand=scrollbar2.set, exportselection=0)
+		self.deslistbox.bind("<<ListboxSelect>>", lambda event: self.update_tlist())
+
+		# a frame for changing elements
+		self.myContainer1 = Frame(self.MyParent)
+		# add scrollbars for the listboxes
 		scrollbar1.config(command=self.deslistbox.yview)
 		scrollbar2.config(command=self.termlistbox.yview)
 		#add buttons for interaktion with des
@@ -71,24 +81,20 @@ class MyApp():
 		vermenu.add_command(label="bearbeiten")
 
 
-		# import a thesaurus if given as an argument
-		if thes is "":
-			self.t1=Thesaurus("Fahrzeugthesaurus")
-		else:
-			self.t1=thes
 
+		# TESTING
 		self.t1.create_dset("Auto")
 		self.t1.create_dset("Fahrrad")
-		self.t1.thesaurus["Auto"].add_term("Rad", "VB")
-		self.t1.thesaurus["Auto"].add_term("Fahrzeuge", "OB")
-		self.t1.thesaurus["Auto"].add_term("Lenkrad", "VB")
+		self.t1.entries["Auto"].add_term("Rad", "VB")
+		self.t1.entries["Auto"].add_term("Fahrzeuge", "OB")
+		self.t1.entries["Auto"].add_term("Lenkrad", "VB")
 		self.t1.create_dset("Esel")
 		self.t1.create_dset("Motorrad")
 		self.t1.create_dset("Skateboard")
 		self.t1.create_dset("Reifen")
 		for elem in range(100):
 			self.t1.create_dset("Des%s" %elem)
-		self.update_dlist(self.t1.thesaurus.keys())
+		self.update_dlist(self.t1.entries.keys())
 		self.update_tlist()
 
 
@@ -99,16 +105,18 @@ class MyApp():
 			self.deslistbox.insert(END, elem)
 		self.deslistbox.activate(1)
 
+
 	def update_tlist(self):
 		""" Updates the listbox for the relations and terms"""
-		if self.deslistbox.curselection()!=():
-			tlist=self.t1.thesaurus[self.deslistbox.get(self.deslistbox.curselection())].get_terms()
-		else:
-			tlist=self.t1.thesaurus[self.deslistbox.get(0)].get_terms()
-		self.termlistbox.delete(0, END)
-		print tlist
-		for key,value in tlist.iteritems():
-				self.termlistbox.insert(END, key+str(value))
+		if self.t1.entries!={}:
+			if self.deslistbox.curselection()!=():
+				tlist=self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].get_terms()
+			else:
+				tlist=self.t1.entries[self.deslistbox.get(0)].get_terms()
+			self.termlistbox.delete(0, END)
+			print tlist
+			for key,value in tlist.iteritems():
+					self.termlistbox.insert(END, key+str(value))
 
 	def add_window(self):
 		pass
@@ -120,7 +128,7 @@ class MyApp():
 		""" Deletes the selected element of the listbox for the descriptors"""
 		if self.deslistbox.curselection() != ():
 			self.deslistbox.delete(self.deslistbox.curselection())
-			#self.t1.thesaurus.removedes(self.deslistbox.index(self.deslistbox.curselection()))
+			#self.t1.entries.removedes(self.deslistbox.index(self.deslistbox.curselection()))
 
 	def add_des(self,des):
 		""" Deletes the selected element of the listbox for the relations and terms"""
@@ -174,11 +182,11 @@ if __name__ == '__main__':
 	# t1.create_dset("Auto")
 	# t1.create_dset("Esel")
 	# t1.create_dset("Fahrrad")
-	# t1.thesaurus["Fahrrad"].add_term("Klingel", "VB")
-	# t1.thesaurus["Fahrrad"].add_term("Fahrzeuge", "UB")
-	# t1.thesaurus["Fahrrad"].add_term("Mofa", "VB")
+	# t1.entries["Fahrrad"].add_term("Klingel", "VB")
+	# t1.entries["Fahrrad"].add_term("Fahrzeuge", "UB")
+	# t1.entries["Fahrrad"].add_term("Mofa", "VB")
 	# #no me gusta
-	# #print t1.thesaurus["Fahrrad"].add_term("Yes", "OB")
+	# #print t1.entries["Fahrrad"].add_term("Yes", "OB")
 	# t1.add("Fahrrad", "Fortbewegungsmittel", "UB")
 	#t1.add("Esel", "Fortbewegungsmittel", "OB")
 

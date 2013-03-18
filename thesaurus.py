@@ -19,8 +19,16 @@ class Thesaurus(object):
 
 	def edit_dset(self, setname, newname):
 		"""Edits the name of a descriptorset."""
-		self.entries[setname].set_name(newname)
-		#TODO edit setname in self.entries
+		self.entries[newname] = self.entries[setname]
+		self.entries[newname].set_name(newname)
+		self.delete_dset(setname)
+		#to do: edit all other relations to this set
+
+
+	def delete_dset(self, setname):
+		"""Delete reference to a set."""
+		del self.entries[setname]
+		#to do: remove all other connections to this set
 
 	def add(self, name, term, rel):
 		"""This forwards its variables to add_term and also checks whether a new term has been created successfully. If so, it will create a set for the new term."""
@@ -78,6 +86,11 @@ class Thesaurus(object):
 			pass
 		else:
 			print "Fehler! Unbekanntes Format!"
+
+
+	def connect(self):
+		"""Finds relations between descriptorsets and connects them."""
+
 
 if __name__ == '__main__':
 	t1=Thesaurus("Fahrzeugthesaurus")

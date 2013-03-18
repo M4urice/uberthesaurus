@@ -4,7 +4,6 @@ TODO
 ----
 * GUI
 * vollständiger Export/Import
-* Deksriptorensätze löschen, bearbeiten
 * Deskriptorensätze Logik
 * Docstrings und Kommentare
 * Installationsanleitung
@@ -12,5 +11,5 @@ TODO
 
 Features
 --------
-* Deksriptorensätze einfügen
+* Deksriptorensätze einfügen, löschen, bearbeiten
 * Terme einfügen, löschen, bearbeiten

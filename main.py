@@ -21,6 +21,7 @@ class MyApp():
 		# 2 listboxes for des and terms
 		self.deslistbox = Listbox(self.MyParent, yscrollcommand=scrollbar1.set, exportselection=0)
 		self.termlistbox = Listbox(self.MyParent, yscrollcommand=scrollbar2.set, exportselection=0)
+		#self.termlistbox.bind("<<Double-Button-1>>", lambda event:self.deslistbox.select_set())
 		self.deslistbox.bind("<<ListboxSelect>>", lambda event: self.update_tlist())
 
 		# a frame for changing elements
@@ -80,14 +81,15 @@ class MyApp():
 		vermenu.add_command(label="loeschen")
 		vermenu.add_command(label="bearbeiten")
 
-
-
 		# TESTING
 		self.t1.create_dset("Auto")
 		self.t1.create_dset("Fahrrad")
 		self.t1.entries["Auto"].add_term("Rad", "VB")
 		self.t1.entries["Auto"].add_term("Fahrzeuge", "OB")
 		self.t1.entries["Auto"].add_term("Lenkrad", "VB")
+		self.t1.entries["Fahrrad"].add_term("Rad", "VB")
+		self.t1.entries["Fahrrad"].add_term("Fahrzeuge", "OB")
+		self.t1.entries["Fahrrad"].add_term("Lenkrad", "VB")
 		self.t1.create_dset("Esel")
 		self.t1.create_dset("Motorrad")
 		self.t1.create_dset("Skateboard")
@@ -103,7 +105,7 @@ class MyApp():
 		self.deslistbox.delete(0, END)
 		for elem in sorted(dlist):
 			self.deslistbox.insert(END, elem)
-		self.deslistbox.activate(1)
+		self.deslistbox.select_set(0)
 
 
 	def update_tlist(self):
@@ -117,12 +119,16 @@ class MyApp():
 			for key,value in tlist.iteritems():
 				for elem in value:
 					self.termlistbox.insert(END, key + " "+elem)
+			self.termlistbox.select_set(0)
+
 
 	def add_window(self):
 		pass
 
+
 	def edit_window(self):
 		pass
+
 
 	def del_des(self):
 		""" Deletes the selected element of the listbox for the descriptors"""
@@ -130,27 +136,36 @@ class MyApp():
 			self.deslistbox.delete(self.deslistbox.curselection())
 			#self.t1.entries.removedes(self.deslistbox.index(self.deslistbox.curselection()))
 
+
 	def add_des(self,des):
 		""" Deletes the selected element of the listbox for the relations and terms"""
 		self.deslistbox.insert(END, des)
 
+
 	def edit_des(self):
 		pass
+
 
 	def del_term(self):
 		pass
 
+
 	def add_term(self,des):
 		pass
+
 
 	def edit_term(self):
 		pass
 
+
 	def exit_prog(self):
 		self.save_thes()
 		self.MyParent.destroy()
+
+
 	def save_thes(self):
 		pass
+
 
 	def suche(self):
 		self.myContainer1.destroy()
@@ -177,28 +192,6 @@ class MyApp():
 
 if __name__ == '__main__':
 	t1=Thesaurus("Fahrzeugthesaurus")
-
-	# DSET TESTS
-	# t1.create_dset("Auto")
-	# t1.create_dset("Esel")
-	# t1.create_dset("Fahrrad")
-	# t1.entries["Fahrrad"].add_term("Klingel", "VB")
-	# t1.entries["Fahrrad"].add_term("Fahrzeuge", "UB")
-	# t1.entries["Fahrrad"].add_term("Mofa", "VB")
-	# #no me gusta
-	# #print t1.entries["Fahrrad"].add_term("Yes", "OB")
-	# t1.add("Fahrrad", "Fortbewegungsmittel", "UB")
-	#t1.add("Esel", "Fortbewegungsmittel", "OB")
-
-	# IMPORT/EXPORT
-	# t1.export_thesaurus("JSON", "lol")
-	# t1.export_thesaurus("CSV", "lol")
-	# t1.export_thesaurus("XML", "lol")
-	# t1.import_dsets("JSON", "lol")
-	# t1.import_dsets("CSV", "lol")
-	# t1.import_dsets("XML", "lol")
-
-	# GUI TESTS
 	root= Tk()
 	myapp = MyApp(root,t1)
 	root.mainloop()

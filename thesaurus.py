@@ -10,22 +10,22 @@ class Thesaurus(object):
 		self.entries = {}
 
 
-	def create_dset(self, setname):
+	def create_entries(self, setname):
 		"""This creates a new descriptor which is added to the dict "entries" """
 		if setname not in self.entries.keys():
 			self.entries[setname] = Descriptor(setname)
 		else:
 			print "Deskriptorset " + setname + " gibt es schon"
 
-	def edit_dset(self, setname, newname):
+	def edit_entries(self, setname, newname):
 		"""Edits the name of a descriptorset."""
 		self.entries[newname] = self.entries[setname]
 		self.entries[newname].set_name(newname)
-		self.delete_dset(setname)
+		self.delete_entries(setname)
 		#to do: edit all other relations to this set
 
 
-	def delete_dset(self, setname):
+	def delete_entries(self, setname):
 		"""Delete reference to a set."""
 		del self.entries[setname]
 		#to do: remove all other connections to this set
@@ -33,7 +33,7 @@ class Thesaurus(object):
 	def add(self, name, term, rel):
 		"""This forwards its variables to add_term and also checks whether a new term has been created successfully. If so, it will create a set for the new term."""
 		if self.entries[name].add_term(term, rel):
-			self.create_dset(term)
+			self.create_entries(term)
 
 	def export_thesaurus(self, format, filename):
 		"""This exports all elements of the dict "self.entries" to JSON, CSV or XML"""
@@ -53,9 +53,9 @@ class Thesaurus(object):
 		elif format == "XML":
 			xmlentries = Element( "Deskriptorsets")
 			for name, terms in tempdict.iteritems():
-				xmldset = SubElement(xmlentries, name)
+				xmlentries = SubElement(xmlentries, name)
 				for elem in terms:
-					xmlelem = SubElement(xmldset, elem)
+					xmlelem = SubElement(xmlentries, elem)
 					xmlelem.text=""
 					for elm in terms[elem]:
 						xmlelem.text +=elm+", "
@@ -95,10 +95,10 @@ class Thesaurus(object):
 if __name__ == '__main__':
 	t1=Thesaurus("Fahrzeugthesaurus")
 
-	# DSET TESTS
-	t1.create_dset("Auto")
-	t1.create_dset("Esel")
-	t1.create_dset("Fahrrad")
+	# entries TESTS
+	t1.create_entries("Auto")
+	t1.create_entries("Esel")
+	t1.create_entries("Fahrrad")
 	t1.entries["Fahrrad"].add_term("Klingel", "VB")
 	t1.entries["Fahrrad"].add_term("Fahrzeuge", "UB")
 	t1.entries["Fahrrad"].add_term("Mofa", "VB")

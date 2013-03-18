@@ -82,20 +82,20 @@ class MyApp():
 		vermenu.add_command(label="bearbeiten")
 
 		# TESTING
-		self.t1.create_dset("Auto")
-		self.t1.create_dset("Fahrrad")
+		self.t1.create_entries("Auto")
+		self.t1.create_entries("Fahrrad")
 		self.t1.entries["Auto"].add_term("Rad", "VB")
 		self.t1.entries["Auto"].add_term("Fahrzeuge", "OB")
 		self.t1.entries["Auto"].add_term("Lenkrad", "VB")
 		self.t1.entries["Fahrrad"].add_term("Rad", "VB")
 		self.t1.entries["Fahrrad"].add_term("Fahrzeuge", "OB")
 		self.t1.entries["Fahrrad"].add_term("Lenkrad", "VB")
-		self.t1.create_dset("Esel")
-		self.t1.create_dset("Motorrad")
-		self.t1.create_dset("Skateboard")
-		self.t1.create_dset("Reifen")
+		self.t1.create_entries("Esel")
+		self.t1.create_entries("Motorrad")
+		self.t1.create_entries("Skateboard")
+		self.t1.create_entries("Reifen")
 		for elem in range(100):
-			self.t1.create_dset("Des%s" %elem)
+			self.t1.create_entries("Des%s" %elem)
 		self.update_dlist(self.t1.entries.keys())
 		self.update_tlist()
 

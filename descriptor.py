@@ -63,3 +63,13 @@ class Descriptor(object):
 		"""Used to edit a relation of a term. It removes the term from the old relation and adds it to the correct one."""
 		self.remove_term(rel, term)
 		self.add_term(term, newrel)
+
+
+if __name__ == '__main__':
+	# TEST Descriptor
+	d1= Descriptor("Baum")
+	d1.add_term("Blatt", "VB")
+	d1.add_term("Wald", "OB")
+	d1.add_term("Wurzel", "VB")
+	d1.dict["OB"].remove("Wald")
+	print d1.get_terms()

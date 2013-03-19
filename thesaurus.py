@@ -1,5 +1,5 @@
 import json, csv
-from xml.etree.ElementTree import Element, SubElement, tostring
+import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 from descriptor import Descriptor
 
@@ -11,11 +11,11 @@ class Thesaurus(object):
 
 
 	def create_entries(self, setname):
-		"""This creates a new descriptor which is added to the dict "entries" """
+		"""Creates a new descriptor which is added to the dict "entries" """
 		if setname not in self.entries.keys():
 			self.entries[setname] = Descriptor(setname)
 		else:
-			print "Deskriptorset " + setname + " gibt es schon"
+			print "Eintrag " + setname + " gibt es schon"
 
 	def edit_entries(self, setname, newname):
 		"""Edits the name of a descriptorset."""
@@ -26,7 +26,7 @@ class Thesaurus(object):
 
 
 	def delete_entries(self, setname):
-		"""Delete reference to a set."""
+		"""Deletes reference to a set."""
 		del self.entries[setname]
 		#to do: remove all other connections to this set
 
@@ -36,54 +36,69 @@ class Thesaurus(object):
 			self.create_entries(term)
 
 	def export_thesaurus(self, format, filename):
-		"""This exports all elements of the dict "self.entries" to JSON, CSV or XML"""
-		# make a dict tempdict with str from objectdict self.entries
+		"""Exports all entries of the thesaurus to JSON, CSV or XML"""
 		tempdict = {}
 		for  elem in self.entries:
 			tempdict[elem] = self.entries[elem].get_terms()
-		# handle the export
+
 		if format == "JSON":
 			with open("%s.json"%filename,"w") as json_output:
-				json.dump(tempdict,json_output)
+				json.dump(tempdict, json_output, sort_keys=True, indent=5)
+
 		elif format == "CSV":
 				with open('%s.csv'%filename, 'w') as csv_output:
 					writer = csv.writer(csv_output, delimiter=";")
 					writer.writerow(tempdict.keys())
 					writer.writerow(tempdict.values())
+
 		elif format == "XML":
-			xmlentries = Element( "Deskriptorsets")
+			entries = ET.Element( "Thesaurusentries")
 			for name, terms in tempdict.iteritems():
-				xmlentries = SubElement(xmlentries, name)
+				xmlentries = ET.SubElement(entries, name)
 				for elem in terms:
-					xmlelem = SubElement(xmlentries, elem)
+					xmlelem = ET.SubElement(xmlentries, elem)
 					xmlelem.text=""
 					for elm in terms[elem]:
 						xmlelem.text +=elm+", "
-			## print xml
-			xml = tostring(xmlentries)
-			dom = parseString(xml)
-			print dom.toprettyxml('    ')
+			tree = ET.ElementTree(entries)
+			tree.write("%s.xml"%filename)
+
 		else:
 			print "Fehler! Unbekanntes Format!"
 
 
 	def import_thesaurus(self, format, filename):
-		"""This imports thesauri from JSON, CSV or XML and returns a dict"""
+		"""Imports thesauri from JSON, CSV or XML and returns a dict"""
+
 		if format == "JSON":
+			self.entries={}
 			with open("%s.json"%filename,"r") as json_input:
-				data = json.load(json_input)
-				#print "JSON: ", data
+				tempdict = json.load(json_input)
+				for entr,descr in tempdict.iteritems():
+					self.create_entries(entr)
+					if descr !={}:
+						for rel,termlist in descr.iteritems():
+							for term in termlist:
+								self.entries[entr].add_term(term, rel)
+
+
 		elif format == "CSV":
-			data = {}
+			self.entries={}
 			with open('%s.csv'%filename, 'r') as csv_input:
 				reader = csv.reader(csv_input, delimiter=";")
-				for row in reader:
-					keys = row
-					values= reader.next()
-					for elem in range(len(keys)):
-						data[keys[elem]]=values[elem]
+				for keys in reader:
+					#values= reader.next()
+					for elem in keys:
+						self.create_entries(elem)
+
 		elif format == "XML":
-			pass
+			self.entries={}
+			root=ET.parse("%s.xml"%filename)
+			entries=root.getroot()
+			for entrie in entries:
+				# print entrie
+				pass
+
 		else:
 			print "Fehler! Unbekanntes Format!"
 
@@ -95,24 +110,26 @@ class Thesaurus(object):
 if __name__ == '__main__':
 	t1=Thesaurus("Fahrzeugthesaurus")
 
-	# entries TESTS
-	t1.create_entries("Auto")
-	t1.create_entries("Esel")
-	t1.create_entries("Fahrrad")
-	t1.entries["Fahrrad"].add_term("Klingel", "VB")
-	t1.entries["Fahrrad"].add_term("Fahrzeuge", "UB")
-	t1.entries["Fahrrad"].add_term("Mofa", "VB")
+	# # entries TESTS
+	# t1.create_entries("Auto")
+	# t1.create_entries("Esel")
+	# t1.create_entries("Fahrrad")
+	# t1.add("Fahrrad", "Klingel", "UB")
+	# t1.add("Fahrrad", "Speiche", "UB")
+	# t1.add("Fahrrad", "Fortbewegungsmittel", "OB")
 	#no me gusta
-	print t1.entries["Fahrrad"].add_term("Yes", "OB")
-	t1.add("Fahrrad", "Fortbewegungsmittel", "UB")
-	t1.add("Esel", "Fortbewegungsmittel", "OB")
+	#print t1.entries["Fahrrad"].add_term("Yes", "OB")
+
+	#t1.add("Esel", "Fortbewegungsmittel", "OB")
 
 
 
-	# IMPORT/EXPORT
-	t1.export_thesaurus("JSON", "lol")
-	t1.export_thesaurus("CSV", "lol")
-	t1.export_thesaurus("XML", "lol")
+	# # IMPORT/EXPORT
+	# t1.export_thesaurus("JSON", "lol")
+	# t1.export_thesaurus("CSV", "lol")
+	# t1.export_thesaurus("XML", "lol")
 	t1.import_thesaurus("JSON", "lol")
-	t1.import_thesaurus("CSV", "lol")
-	t1.import_thesaurus("XML", "lol")
+	for elem in t1.entries:
+		print elem,":",t1.entries[elem].get_terms()
+	# t1.import_thesaurus("CSV", "lol")
+	# t1.import_thesaurus("XML", "lol")

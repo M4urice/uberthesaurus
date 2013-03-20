@@ -4,6 +4,7 @@ TODO
 ----
 * GUI
 * vollständiger Export/Import
+* Expeptions beim Import
 * Deskriptorensätze Logik
 * Docstrings und Kommentare
 * Installationsanleitung
@@ -13,5 +14,5 @@ Features
 --------
 * Deksriptorensätze einfügen, löschen, bearbeiten
 * Terme einfügen, löschen, bearbeiten
-* Export nach JSON
-* Import nach JSON
+* Export nach JSON, CSV, XML
+* Import nach JSON, CSV

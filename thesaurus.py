@@ -31,7 +31,9 @@ class Thesaurus(object):
 		#to do: remove all other connections to this set
 
 	def add(self, name, term, rel):
-		"""This forwards its variables to add_term and also checks whether a new term has been created successfully. If so, it will create a set for the new term."""
+		"""	This forwards its variables to add_term and also checks
+		whether a new term has been created successfully.
+		If so, it will create a set for the new term."""
 		if self.entries[name].add_term(term, rel):
 			self.create_entries(term)
 
@@ -43,28 +45,52 @@ class Thesaurus(object):
 
 		if format == "JSON":
 			with open("%s.json"%filename,"w") as json_output:
+				#indent=5 for pretty print
 				json.dump(tempdict, json_output, sort_keys=True, indent=5)
 
 		elif format == "CSV":
-				with open('%s.csv'%filename, 'w') as csv_output:
+			with open('%s.csv'%filename, 'w') as csv_output:
 					writer = csv.writer(csv_output, delimiter=";")
 					writer.writerow(tempdict.keys())
 					writer.writerow(tempdict.values())
 
 		elif format == "XML":
-			entries = ET.Element( "Thesaurusentries")
+			entries = ET.Element( "data")
 			for name, terms in tempdict.iteritems():
-				xmlentries = ET.SubElement(entries, name)
-				for elem in terms:
-					xmlelem = ET.SubElement(xmlentries, elem)
-					xmlelem.text=""
-					for elm in terms[elem]:
-						xmlelem.text +=elm+", "
+				xmlentries = ET.SubElement(entries, "descriptor")
+				xmlentries.set("name",name)
+				for rel in terms:
+					print rel
+					xmlelem = ET.SubElement(xmlentries, "relation")
+					xmlelem.set("name",rel)
+					for term in terms[rel]:
+						xmlterm=ET.SubElement(xmlelem, "term")
+						xmlterm.text=term
+			#pretty-print
+			self.indent(entries,2)
 			tree = ET.ElementTree(entries)
+
 			tree.write("%s.xml"%filename)
 
 		else:
 			print "Fehler! Unbekanntes Format!"
+
+
+	# method taken from  http://effbot.org/zone/element.htm
+	def indent(self, elem, level=0):
+		i = "\n" + level*"  "
+		if len(elem):
+			if not elem.text or not elem.text.strip():
+				elem.text = i + "  "
+			if not elem.tail or not elem.tail.strip():
+				elem.tail = i
+			for elem in elem:
+				self.indent(elem, level+1)
+			if not elem.tail or not elem.tail.strip():
+				elem.tail = i
+		else:
+			if level and (not elem.tail or not elem.tail.strip()):
+				elem.tail = i
 
 
 	def import_thesaurus(self, format, filename):
@@ -86,38 +112,48 @@ class Thesaurus(object):
 			self.entries={}
 			with open('%s.csv'%filename, 'r') as csv_input:
 				reader = csv.reader(csv_input, delimiter=";")
-				for keys in reader:
-					#values= reader.next()
-					for elem in keys:
-						self.create_entries(elem)
+				row1 = reader.next()
+				row2 = reader.next()
+				for i in range(len(row1)):
+					self.create_entries(row1[i])
+					row2[i]=row2[i].split("],")
+					for elem in row2[i]:
+						elem=elem.translate(None,"{'[ ]}").split(":")
+						if elem[0]!="":
+							rel=elem[0]
+							terms=elem[1].split(",")
+							for term in terms:
+								self.add(row1[i], term, rel)
 
 		elif format == "XML":
 			self.entries={}
-			root=ET.parse("%s.xml"%filename)
-			entries=root.getroot()
-			for entrie in entries:
-				# print entrie
-				pass
+			tree=ET.parse("%s.xml"%filename)
+			root=tree.getroot()
+			for descriptor in root:
+				self.create_entries(descriptor.attrib.values()[0])
+				for relation in descriptor:
+					for term in relation:
+						self.add(descriptor.attrib.values()[0], term.text, relation.attrib.values()[0])
 
 		else:
 			print "Fehler! Unbekanntes Format!"
 
 
 	def connect(self):
-		"""Finds relations between descriptorsets and connects them."""
+		"""Finds relations between descriptorsets"""
 
 
 if __name__ == '__main__':
 	t1=Thesaurus("Fahrzeugthesaurus")
 
-	# # entries TESTS
-	# t1.create_entries("Auto")
-	# t1.create_entries("Esel")
-	# t1.create_entries("Fahrrad")
-	# t1.add("Fahrrad", "Klingel", "UB")
-	# t1.add("Fahrrad", "Speiche", "UB")
-	# t1.add("Fahrrad", "Fortbewegungsmittel", "OB")
-	#no me gusta
+	# entries TESTS
+	t1.create_entries("Auto")
+	t1.create_entries("Esel")
+	t1.create_entries("Fahrrad")
+	t1.add("Fahrrad", "Klingel", "UB")
+	t1.add("Fahrrad", "Speiche", "UB")
+	t1.add("Fahrrad", "Fortbewegungsmittel", "OB")
+	# #no me gusta
 	#print t1.entries["Fahrrad"].add_term("Yes", "OB")
 
 	#t1.add("Esel", "Fortbewegungsmittel", "OB")
@@ -125,11 +161,12 @@ if __name__ == '__main__':
 
 
 	# # IMPORT/EXPORT
-	# t1.export_thesaurus("JSON", "lol")
-	# t1.export_thesaurus("CSV", "lol")
-	# t1.export_thesaurus("XML", "lol")
-	t1.import_thesaurus("JSON", "lol")
-	for elem in t1.entries:
-		print elem,":",t1.entries[elem].get_terms()
-	# t1.import_thesaurus("CSV", "lol")
-	# t1.import_thesaurus("XML", "lol")
+	# t1.export_thesaurus("JSON", "testfile")
+	# t1.export_thesaurus("CSV", "testfile")
+	# t1.export_thesaurus("XML", "testfile")
+	# t1.import_thesaurus("JSON", "testfile")
+
+	# t1.import_thesaurus("CSV", "testfile")
+	# t1.import_thesaurus("XML", "testfile")
+	# for elem in t1.entries:
+	# 	print elem,":",t1.entries[elem].get_terms()

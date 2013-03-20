@@ -64,23 +64,11 @@ class MyApp():
 		menu.add_cascade(label="Datei", menu=filemenu)
 		# Main Menu
 		filemenu.add_command(label="Neu")
-		filemenu.add_command(label="Import")
-		filemenu.add_command(label="Export")
-		filemenu.add_command(label="Oeffnen")
-		filemenu.add_command(label="Speichern")
+		filemenu.add_command(label="Import", command=self.importdatei)
+		filemenu.add_command(label="Export", command=self.export)
+		filemenu.add_command(label="Oeffnen", command=self.oeffnen)
+		filemenu.add_command(label="Speichern", command=self.speichern)
 		filemenu.add_command(label="Schliessen", command=self.exit_prog)
-        # Deskrptor Menu
-		desmenu = Menu(menu)
-		menu.add_cascade(label="Deskritpor", menu=desmenu)
-		desmenu.add_command(label="Deskriptorliste")
-		desmenu.add_command(label="Suche", command=self.suche)
-        # Verwaltung
-		vermenu = Menu(menu)
-		menu.add_cascade(label="Verwaltung", menu=vermenu)
-		vermenu.add_command(label="einfuegen")
-		vermenu.add_command(label="loeschen")
-		vermenu.add_command(label="bearbeiten")
-
 		# TESTING
 		self.t1.create_entries("Auto")
 		self.t1.create_entries("Fahrrad")
@@ -166,28 +154,20 @@ class MyApp():
 	def save_thes(self):
 		pass
 
+	def oeffnen(self):
+		self.name = askopenfilename()
 
-	def suche(self):
-		self.myContainer1.destroy()
-		self.myContainer1 = Frame(self.MyParent)
-		self.myContainer1.pack()
-		self.label_suche = Label(self.myContainer1, text="Suche:")
-		self.label_suche.grid(row=0)
-		self.entry_suche = Entry(self.myContainer1)
-		self.entry_suche.grid(row=0, column=1)
-		self.suchen_button=Button(self.myContainer1, text='Suchen')
-		self.suchen_button.grid(row=1)
+	def speichern(self):
+		self.name = asksaveasfile(mode="w")
+		
+	def export(self):
+		self.name = askopenfilename()
+	
+	def importdatei(self):
+		self.name = asksaveasfile(mode="w")
+	
+		
 
-
-	def newdeskriptor(self):
-		self.myContainer1.destroy()
-		self.label_ober.grid(row=0)
-		self.label_unter.grid(row=1)
-		self.label_verwandt.grid(row=2)
-		self.entry_oberbegriff.grid(row=0, column=1)
-		self.entry_unterbegriff.grid(row=1, column=1)
-		self.entry_verwandterbegriff.grid(row=2, column=1)
-		self.speichern_button.grid(row=4)
 
 
 if __name__ == '__main__':

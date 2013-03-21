@@ -43,14 +43,14 @@ class MyApp():
 		self.MyParent.rowconfigure(3, weight=1)
 		self.MyParent.rowconfigure(5, pad=7)
 		# place all GUI-elements
-		add1_button.grid(row=1, sticky=NW, pady=4)
-		edit1_button.grid(row=2, sticky=NW)
-		del1_button.grid(row=3, sticky=NW, pady=4)
+		add1_button.grid(row=1, column=0, pady=4)
+		edit1_button.grid(row=2, column=0)
+		del1_button.grid(row=3, column=0, pady=4)
 
-		self.deslistbox.grid(row=1, column=1, rowspan=3, sticky=NS)
-		scrollbar1.grid(row=1, column=1, sticky=NE)
-		self.termlistbox.grid(row=1,column=2, sticky=NE)
-		scrollbar2.grid(row=0,column=4)
+		self.deslistbox.grid(row=1, column=1, rowspan=3)
+		scrollbar1.grid(row=1, column=2)
+		self.termlistbox.grid(row=1,column=3, rowspan=3)
+		scrollbar2.grid(row=1,column=4)
 
 		add2_button.grid(row=1,column=5)
 		edit2_button.grid(row=2,column=5)

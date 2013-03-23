@@ -1,4 +1,5 @@
 import json, csv
+import os.path
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 from descriptor import Descriptor
@@ -37,30 +38,30 @@ class Thesaurus(object):
 		if self.entries[name].add_term(term, rel):
 			self.create_entries(term)
 
-	def export_thesaurus(self, format, filename):
+	def export_thesaurus(self, filename):
 		"""Exports all entries of the thesaurus to JSON, CSV or XML"""
+		extension = os.path.splitext(filename)[1]
 		tempdict = {}
 		for  elem in self.entries:
 			tempdict[elem] = self.entries[elem].get_terms()
 
-		if format == "JSON":
-			with open("%s.json"%filename,"w") as json_output:
+		if extension == ".json":
+			with open(filename,"w") as json_output:
 				#indent=5 for pretty print
 				json.dump(tempdict, json_output, sort_keys=True, indent=5)
 
-		elif format == "CSV":
-			with open('%s.csv'%filename, 'w') as csv_output:
+		elif extension == ".csv":
+			with open(filename, 'w') as csv_output:
 					writer = csv.writer(csv_output, delimiter=";")
 					writer.writerow(tempdict.keys())
 					writer.writerow(tempdict.values())
 
-		elif format == "XML":
+		elif extension == ".xml" or extension == ".xhtml":
 			entries = ET.Element( "data")
 			for name, terms in tempdict.iteritems():
 				xmlentries = ET.SubElement(entries, "descriptor")
 				xmlentries.set("name",name)
 				for rel in terms:
-					print rel
 					xmlelem = ET.SubElement(xmlentries, "relation")
 					xmlelem.set("name",rel)
 					for term in terms[rel]:
@@ -70,7 +71,7 @@ class Thesaurus(object):
 			self.indent(entries,2)
 			tree = ET.ElementTree(entries)
 
-			tree.write("%s.xml"%filename)
+			tree.write(filename)
 
 		else:
 			print "Fehler! Unbekanntes Format!"
@@ -93,12 +94,12 @@ class Thesaurus(object):
 				elem.tail = i
 
 
-	def import_thesaurus(self, format, filename):
+	def import_thesaurus(self, filename):
 		"""Imports thesauri from JSON, CSV or XML and returns a dict"""
-
-		if format == "JSON":
+		extension = os.path.splitext(filename)[1]
+		if extension == ".json":
 			self.entries={}
-			with open("%s.json"%filename,"r") as json_input:
+			with open(filename,"r") as json_input:
 				tempdict = json.load(json_input)
 				for entr,descr in tempdict.iteritems():
 					self.create_entries(entr)
@@ -108,9 +109,9 @@ class Thesaurus(object):
 								self.entries[entr].add_term(term, rel)
 
 
-		elif format == "CSV":
+		elif extension == ".csv":
 			self.entries={}
-			with open('%s.csv'%filename, 'r') as csv_input:
+			with open(filename, 'r') as csv_input:
 				reader = csv.reader(csv_input, delimiter=";")
 				row1 = reader.next()
 				row2 = reader.next()
@@ -125,9 +126,9 @@ class Thesaurus(object):
 							for term in terms:
 								self.add(row1[i], term, rel)
 
-		elif format == "XML":
+		elif extension == ".xml" or extension== ".xhtml":
 			self.entries={}
-			tree=ET.parse("%s.xml"%filename)
+			tree=ET.parse(filename)
 			root=tree.getroot()
 			for descriptor in root:
 				self.create_entries(descriptor.attrib.values()[0])

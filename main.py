@@ -1,7 +1,7 @@
 from Tkinter import *
 from thesaurus import Thesaurus
 from tkFileDialog import askopenfilename
-from tkFileDialog import asksaveasfile
+from tkFileDialog import asksaveasfilename
 
 
 class MyApp():
@@ -84,14 +84,14 @@ class MyApp():
 		self.t1.create_entries("Reifen")
 		for elem in range(100):
 			self.t1.create_entries("Des%s" %elem)
-		self.update_dlist(self.t1.entries.keys())
+		self.update_dlist()
 		self.update_tlist()
 
 
-	def update_dlist(self, dlist):
+	def update_dlist(self):
 		""" Updates the listbox for the descriptors"""
 		self.deslistbox.delete(0, END)
-		for elem in sorted(dlist):
+		for elem in sorted(self.t1.entries.keys()):
 			self.deslistbox.insert(END, elem)
 		self.deslistbox.select_set(0)
 
@@ -155,18 +155,28 @@ class MyApp():
 		pass
 
 	def oeffnen(self):
-		self.name = askopenfilename()
+		self.filename = askopenfilename()
 
 	def speichern(self):
-		self.name = asksaveasfile(mode="w")
-		
+		self.filename = asksaveasfilename()
+
 	def export(self):
-		self.name = askopenfilename()
-	
+		formats = [
+		('Comma-separated values','*.csv'),
+		('JavaScript Object Notation','*.json'),
+		('Extensible Markup Language','*.xml'),
+    ]
+		self.filename = asksaveasfilename(filetypes=formats, title="Den Thesaurus exportieren", defaultextension=".xml")
+		print self.filename
+		self.t1.export_thesaurus(self.filename)
+
+
 	def importdatei(self):
-		self.name = asksaveasfile(mode="w")
-	
-		
+		self.filename = askopenfilename()
+		self.t1.import_thesaurus(self.filename)
+		self.update_dlist()
+
+
 
 
 

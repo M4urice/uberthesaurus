@@ -66,8 +66,6 @@ class MyApp():
 		filemenu.add_command(label="Neu")
 		filemenu.add_command(label="Import", command=self.importdatei)
 		filemenu.add_command(label="Export", command=self.export)
-		filemenu.add_command(label="Oeffnen", command=self.oeffnen)
-		filemenu.add_command(label="Speichern", command=self.speichern)
 		filemenu.add_command(label="Schliessen", command=self.exit_prog)
 		# TESTING
 		self.t1.create_entries("Auto")
@@ -147,34 +145,29 @@ class MyApp():
 
 
 	def exit_prog(self):
-		self.save_thes()
+		self.export()
 		self.MyParent.destroy()
 
-
-	def save_thes(self):
-		pass
-
-	def oeffnen(self):
-		self.filename = askopenfilename()
-
-	def speichern(self):
-		self.filename = asksaveasfilename()
 
 	def export(self):
 		formats = [
 		('Comma-separated values','*.csv'),
 		('JavaScript Object Notation','*.json'),
 		('Extensible Markup Language','*.xml'),
-    ]
+    	]
 		self.filename = asksaveasfilename(filetypes=formats, title="Den Thesaurus exportieren", defaultextension=".xml")
-		print self.filename
-		self.t1.export_thesaurus(self.filename)
-
+		if len(self.filename)>0:
+			self.t1.export_thesaurus(self.filename)
+		else:
+			print "Keine Datei angegeben."
 
 	def importdatei(self):
 		self.filename = askopenfilename()
-		self.t1.import_thesaurus(self.filename)
-		self.update_dlist()
+		if len(self.filename)>0:
+			self.t1.import_thesaurus(self.filename)
+			self.update_dlist()
+		else:
+			print "Keine Datei angegeben."
 
 
 

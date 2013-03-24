@@ -30,13 +30,13 @@ class MyApp():
 		scrollbar1.config(command=self.deslistbox.yview)
 		scrollbar2.config(command=self.termlistbox.yview)
 		#add buttons for interaktion with des
-		add1_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_window)
-		edit1_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_window)
-		del1_button=Button(self.MyParent, text="Loeschen", command=self.del_des)
+		add1_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_window, width=10)
+		edit1_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_window, width=10)
+		del1_button=Button(self.MyParent, text="Loeschen", command=self.del_des, width=10)
 		#add buttons for interaktion with terms
-		add2_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_window)
-		edit2_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_window)
-		del2_button=Button(self.MyParent, text="Loeschen", command=self.del_term)
+		add2_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_window, width=10)
+		edit2_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_window, width=10)
+		del2_button=Button(self.MyParent, text="Loeschen", command=self.del_term, width=10)
 		# confige the spacing
 		self.MyParent.columnconfigure(1, weight=0)
 		self.MyParent.columnconfigure(1, pad=0)

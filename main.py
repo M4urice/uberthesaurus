@@ -38,23 +38,26 @@ class MyApp():
 		edit2_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_window)
 		del2_button=Button(self.MyParent, text="Loeschen", command=self.del_term)
 		# confige the spacing
-		self.MyParent.columnconfigure(1, weight=1)
+		self.MyParent.columnconfigure(1, weight=0)
+		self.MyParent.columnconfigure(1, pad=0)
 		self.MyParent.columnconfigure(2, pad=7)
+		self.MyParent.columnconfigure(3, pad=7)
+		self.MyParent.rowconfigure(1, weight=0)
+		self.MyParent.rowconfigure(2, weight=0)
 		self.MyParent.rowconfigure(3, weight=1)
-		self.MyParent.rowconfigure(5, pad=7)
 		# place all GUI-elements
-		add1_button.grid(row=1, column=0, pady=4)
-		edit1_button.grid(row=2, column=0)
-		del1_button.grid(row=3, column=0, pady=4)
+		add1_button.grid(row=1, column=0, pady=2, sticky=NW)
+		edit1_button.grid(row=2, column=0, pady=2, sticky=NW)
+		del1_button.grid(row=3, column=0, pady=2, sticky=NW)
 
-		self.deslistbox.grid(row=1, column=1, rowspan=3)
-		scrollbar1.grid(row=1, column=2)
-		self.termlistbox.grid(row=1,column=3, rowspan=3)
-		scrollbar2.grid(row=1,column=4)
+		self.deslistbox.grid(row=1, column=1, rowspan=3, sticky=N)
+		scrollbar1.grid(row=3, column=2, pady=3, sticky=N)
+		self.termlistbox.grid(row=1,column=3, rowspan=3, sticky=N)
+		scrollbar2.grid(row=3,column=4, pady=3, sticky=N)
 
-		add2_button.grid(row=1,column=5)
-		edit2_button.grid(row=2,column=5)
-		del2_button.grid(row=3,column=5)
+		add2_button.grid(row=1,column=5, pady=2, sticky=NW)
+		edit2_button.grid(row=2,column=5, pady=2, sticky=NW)
+		del2_button.grid(row=3,column=5, pady=2, sticky=NW)
 		# self.myContainer1.grid()
 
 		# Menu

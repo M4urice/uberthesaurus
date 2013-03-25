@@ -136,7 +136,9 @@ class MyApp():
 
 
 	def del_term(self):
-		pass
+		""" Deletes the selected element of the listbox for the descriptors"""
+		if self.termlistbox.curselection() != ():
+			self.termlistbox.delete(self.termlistbox.curselection())
 
 
 	def add_term(self,des):

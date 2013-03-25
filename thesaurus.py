@@ -15,8 +15,8 @@ class Thesaurus(object):
 		"""Creates a new descriptor which is added to the dict "entries" """
 		if setname not in self.entries.keys():
 			self.entries[setname] = Descriptor(setname)
-		else:
-			print "Eintrag " + setname + " gibt es schon"
+		#else:
+		#	print "Eintrag " + setname + " gibt es schon."
 
 	def edit_entries(self, setname, newname):
 		"""Edits the name of a descriptorset."""
@@ -28,9 +28,9 @@ class Thesaurus(object):
 
 	def delete_entries(self, setname):
 		"""Deletes reference to a set."""
-		del self.entries[setname]
-		#to do: remove all other connections to this set
-		#for object in self.entries remove_term(entries) - remove term ohne rel
+		#for object in self.entries:
+		#	object.remove_term_norel(setname)
+		#del self.entries[setname]
 
 	def add(self, name, term, rel):
 		"""	This forwards its variables to add_term and also checks
@@ -155,10 +155,13 @@ if __name__ == '__main__':
 	t1.add("Fahrrad", "Klingel", "UB")
 	t1.add("Fahrrad", "Speiche", "UB")
 	t1.add("Fahrrad", "Fortbewegungsmittel", "OB")
-	# #no me gusta
+	t1.add("Esel", "Fortbewegungsmittel", "OB")
 	#print t1.entries["Fahrrad"].add_term("Yes", "OB")
-
-	#t1.add("Esel", "Fortbewegungsmittel", "OB")
+	print t1.entries["Fahrrad"].get_terms()
+	t1.delete_entries("Fortbewegungsmittel")
+	print t1.entries["Fahrrad"].get_terms()
+	
+	
 
 
 

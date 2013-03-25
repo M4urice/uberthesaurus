@@ -22,8 +22,9 @@ class Thesaurus(object):
 		"""Edits the name of a descriptorset."""
 		self.entries[newname] = self.entries[setname]
 		self.entries[newname].set_name(newname)
+		for object in self.entries:
+			self.entries[object].edit_term_norel(setname, newname)
 		self.delete_entries(setname)
-		#to do: edit all other relations to this set
 
 
 	def delete_entries(self, setname):
@@ -158,8 +159,9 @@ if __name__ == '__main__':
 	t1.add("Esel", "Fortbewegungsmittel", "OB")
 	#print t1.entries["Fahrrad"].add_term("Yes", "OB")
 	print t1.entries["Fahrrad"].get_terms()
-	t1.delete_entries("Fortbewegungsmittel")
+	t1.edit_entries("Fortbewegungsmittel", "Transport")
 	print t1.entries["Fahrrad"].get_terms()
+	print t1.entries["Transport"].get_terms()
 
 
 

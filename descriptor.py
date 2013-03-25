@@ -52,6 +52,13 @@ class Descriptor(object):
 		for n, elem in enumerate(self.dict[rel]):
 			if elem == term:
 				self.dict[rel][n] = newterm
+				
+	def edit_term_norel(self, term, newterm):
+		"""Searches through all relations and replaces the old term with the corrected term."""
+		for rel in self.dict.keys():
+			for n, elem in enumerate(self.dict[rel]):
+				if elem == term:
+					self.dict[rel][n] = newterm
 
 	def remove_term(self, rel, term):
 		"""This removes a term from the descriptorset."""
@@ -60,6 +67,7 @@ class Descriptor(object):
 			self.remove_rel(rel)
 
 	def remove_term_norel(self, term):
+		"""Searches through all relations and removes a term from the set."""
 		for key in self.dict.keys():
 			if term in self.dict[key]:
 				self.dict[key].remove(term)

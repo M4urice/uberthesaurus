@@ -40,7 +40,7 @@ class Descriptor(object):
 								self.dict[rel] = [term]
 							return True
 				else:
-					print term + " existiert schon im Deskriptorsatz fuer " + self._name + "."
+					#print term + " existiert schon im Deskriptorsatz fuer " + self._name + "."
 					return False
 
 	def edit_term(self, rel, term, newterm):

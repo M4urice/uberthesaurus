@@ -143,8 +143,29 @@ class Thesaurus(object):
 
 
 	def connect(self):
-		"""Finds relations between descriptorsets"""
-
+		"""Finds relations between descriptorsets and connects them."""
+		for entry in self.entries:
+			for rel in self.entries[entry].dict.keys():
+				if rel == "OB":
+					for term in self.entries[entry].dict[rel]:
+						self.add(term, entry, "UB")
+				elif rel == "UB":
+					for term in self.entries[entry].dict[rel]:
+						self.add(term, entry, "OB")
+				elif rel == "VB":
+					for term in self.entries[entry].dict[rel]:
+						self.add(term, entry, "VB")
+				elif rel == "BS":
+					for term in self.entries[entry].dict[rel]:
+						self.add(term, entry, "BF")
+				elif rel == "BF":
+					for term in self.entries[entry].dict[rel]:
+						self.add(term, entry, "BS")
+				else:
+					print "There are faulty relations in this thesaurus."
+						
+						
+					
 
 if __name__ == '__main__':
 	t1=Thesaurus("Fahrzeugthesaurus")
@@ -153,15 +174,19 @@ if __name__ == '__main__':
 	t1.create_entries("Auto")
 	t1.create_entries("Esel")
 	t1.create_entries("Fahrrad")
+	t1.create_entries("Bewegung")
 	t1.add("Fahrrad", "Klingel", "UB")
 	t1.add("Fahrrad", "Speiche", "UB")
 	t1.add("Fahrrad", "Fortbewegungsmittel", "OB")
 	t1.add("Esel", "Fortbewegungsmittel", "OB")
+	t1.add("Bewegung", "Fortbewegungsmittel", "VB")
 	#print t1.entries["Fahrrad"].add_term("Yes", "OB")
 	print t1.entries["Fahrrad"].get_terms()
 	t1.edit_entries("Fortbewegungsmittel", "Transport")
 	print t1.entries["Fahrrad"].get_terms()
+	t1.connect()
 	print t1.entries["Transport"].get_terms()
+	
 
 
 

@@ -28,9 +28,9 @@ class Thesaurus(object):
 
 	def delete_entries(self, setname):
 		"""Deletes reference to a set."""
-		#for object in self.entries:
-		#	object.remove_term_norel(setname)
-		#del self.entries[setname]
+		for object in self.entries:
+			self.entries[object].remove_term_norel(setname)
+		del self.entries[setname]
 
 	def add(self, name, term, rel):
 		"""	This forwards its variables to add_term and also checks
@@ -160,8 +160,8 @@ if __name__ == '__main__':
 	print t1.entries["Fahrrad"].get_terms()
 	t1.delete_entries("Fortbewegungsmittel")
 	print t1.entries["Fahrrad"].get_terms()
-	
-	
+
+
 
 
 

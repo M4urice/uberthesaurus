@@ -58,12 +58,13 @@ class Descriptor(object):
 		if rel in self.dict.keys():
 			self.dict[rel].remove(term)
 			self.remove_rel(rel)
-	
+
 	def remove_term_norel(self, term):
-		#for key in self.dict.keys():
-		#	self.dict[key].remove(term)
-		#	self.remove_rel(key)
-			
+		for key in self.dict.keys():
+			if term in self.dict[key]:
+				self.dict[key].remove(term)
+				self.remove_rel(key)
+
 	def remove_rel(self, rel):
 		"""This deletes a relation."""
 		if self.dict[rel] == []:

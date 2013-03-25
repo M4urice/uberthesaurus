@@ -30,6 +30,7 @@ class Thesaurus(object):
 		"""Deletes reference to a set."""
 		del self.entries[setname]
 		#to do: remove all other connections to this set
+		#for object in self.entries remove_term(entries) - remove term ohne rel
 
 	def add(self, name, term, rel):
 		"""	This forwards its variables to add_term and also checks

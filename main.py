@@ -2,6 +2,7 @@ from Tkinter import *
 from thesaurus import Thesaurus
 from tkFileDialog import askopenfilename
 from tkFileDialog import asksaveasfilename
+import tkSimpleDialog
 
 
 class MyApp():
@@ -112,11 +113,10 @@ class MyApp():
 
 
 	def add_window(self):
-		pass
-
-
+		tkSimpleDialog.askstring("Hinzufuegen", "Hinzufuegen:")
+		
 	def edit_window(self):
-		pass
+		tkSimpleDialog.askstring("Bearbeiten", "Bearbeiten:")
 
 
 	def del_des(self):

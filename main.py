@@ -142,7 +142,7 @@ class MyApp():
 			self.termlistbox.delete(self.termlistbox.curselection())
 
 
-	def add_term(self,des): 
+	def add_term(self,des):
 		pass
 
 

@@ -170,6 +170,7 @@ class MyApp():
 
 
 	def export(self):
+		"""extracts the filetype and calls the real export method if a valid filename is given"""
 		formats = [
 		('Comma-separated values','*.csv'),
 		('JavaScript Object Notation','*.json'),
@@ -182,6 +183,7 @@ class MyApp():
 			print "Keine Datei angegeben."
 
 	def importdatei(self):
+		"""extracts the filetype and calls the real import method if a valid filename is given"""
 		self.filename = askopenfilename()
 		if len(self.filename)>0:
 			self.t1.import_thesaurus(self.filename)

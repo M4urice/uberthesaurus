@@ -124,16 +124,18 @@ class MyApp():
 	def add_des(self):
 		""" Deletes the selected element of the listbox for the relations and terms"""
 		des = tkSimpleDialog.askstring("Deskriptor hinzufuegen", "Deskriptor:")
-		self.t1.create_entries(des)
-		self.update_dlist()
-		self.update_tlist()
+		if des is not None:
+			self.t1.create_entries(des)
+			self.update_dlist()
+			self.update_tlist()
 
 
 	def edit_des(self):
 		des = tkSimpleDialog.askstring("Deskriptor bearbeiten", "Bearbeiten:")
-		self.t1.edit_entries(self.deslistbox.get(self.deslistbox.curselection()),des)
-		self.update_dlist()
-		self.update_tlist()
+		if des is not None:
+			self.t1.edit_entries(self.deslistbox.get(self.deslistbox.curselection()),des)
+			self.update_dlist()
+			self.update_tlist()
 
 
 	def del_term(self):
@@ -146,22 +148,25 @@ class MyApp():
 
 
 	def add_term(self):
-		term = tkSimpleDialog.askstring("Term hinzufuegen", "Rel:Term:")#
-		term=term.split(":")
-		self.t1.add(self.deslistbox.get(self.deslistbox.curselection()), term[1], term[0])
-		self.update_dlist()
-		self.update_tlist()
+		term = tkSimpleDialog.askstring("Term hinzufuegen", "Rel:Term:")
+		if term is not None:
+			term=term.split(":")
+			self.t1.add(self.deslistbox.get(self.deslistbox.curselection()), term[1], term[0])
+			self.update_dlist()
+			self.update_tlist()
 
 
 	def edit_term(self):
-		rel_term=tkSimpleDialog.askstring("Term bearbeiten", "Rel:Term").split(":")
-		rel_term_old=self.termlistbox.get(self.termlistbox.curselection()).split(" ")
-		if rel_term[0]!=rel_term_old[0]:
-			self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].edit_rel(str(rel_term_old[0]), str(rel_term_old[1]), str(rel_term[0]))
-		if rel_term[1]!=rel_term_old[1]:
-			self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].edit_term(str(rel_term_old[0]), str(rel_term_old[1]), str(rel_term[1]))
-		self.update_dlist()
-		self.update_tlist()
+		rel_term=tkSimpleDialog.askstring("Term bearbeiten", "Rel:Term")
+		if rel_term is not None:
+			rel_term=rel_term.split(":")
+			rel_term_old=self.termlistbox.get(self.termlistbox.curselection()).split(" ")
+			if rel_term[0]!=rel_term_old[0]:
+				self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].edit_rel(str(rel_term_old[0]), str(rel_term_old[1]), str(rel_term[0]))
+			if rel_term[1]!=rel_term_old[1]:
+				self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].edit_term(str(rel_term_old[0]), str(rel_term_old[1]), str(rel_term[1]))
+			self.update_dlist()
+			self.update_tlist()
 
 	def exit_prog(self):
 		#tkSimpleDialog

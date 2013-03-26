@@ -25,6 +25,7 @@ class Thesaurus(object):
 		#else:
 		#	print "Eintrag " + setname + " gibt es schon."
 
+
 	def edit_entries(self, setname, newname):
 		"""Edits the name of a descriptorset."""
 
@@ -42,6 +43,7 @@ class Thesaurus(object):
 			self.entries[object].remove_term_norel(setname)
 		del self.entries[setname]
 
+
 	def add(self, name, term, rel):
 		"""	This forwards its variables to add_term and also checks
 		whether a new term has been created successfully.
@@ -49,6 +51,7 @@ class Thesaurus(object):
 
 		if self.entries[name].add_term(term, rel):
 			self.create_entries(term)
+
 
 	def export_thesaurus(self, filename):
 		"""Exports all entries of the thesaurus to JSON, CSV or XML"""

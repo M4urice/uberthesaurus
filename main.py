@@ -6,7 +6,12 @@ import tkSimpleDialog
 
 
 class MyApp():
+	"""Class for a GUI """
+
+
 	def __init__(self, parent,thes=""):
+		""" initialize the GUI with all visible elements and menus """
+
 
 		#self.MyParent of MyApp
 		self.MyParent = parent
@@ -72,27 +77,11 @@ class MyApp():
 		self.filemenu.add_command(label="Import", command=self.importdatei)
 		self.filemenu.add_command(label="Export", command=self.export)
 		self.filemenu.add_command(label="Schliessen", command=self.exit_prog)
-		# TESTING
-		self.t1.create_entries("Auto")
-		self.t1.create_entries("Fahrrad")
-		self.t1.add("Auto", "Rad", "VB")
-		self.t1.add("Auto", "Fahrzeuge", "OB")
-		self.t1.add("Auto", "Lenkrad", "VB")
-		self.t1.add("Fahrrad", "Rad", "VB")
-		self.t1.add("Fahrrad", "Fahrzeuge", "OB")
-		self.t1.add("Fahrrad", "Lenkrad", "VB")
-		self.t1.create_entries("Esel")
-		self.t1.create_entries("Motorrad")
-		self.t1.create_entries("Skateboard")
-		self.t1.create_entries("Reifen")
-		for elem in range(100):
-			self.t1.create_entries("Des%s" %elem)
-		self.update_dlist()
-		self.update_tlist()
 
 
 	def update_dlist(self):
 		""" Updates the listbox for the descriptors"""
+
 		self.deslistbox.delete(0, END)
 		for elem in sorted(self.t1.entries.keys()):
 			self.deslistbox.insert(END, elem)
@@ -101,6 +90,7 @@ class MyApp():
 
 	def update_tlist(self):
 		""" Updates the listbox for the relations and terms"""
+
 		if self.t1.entries!={}:
 			if self.deslistbox.curselection()!=():
 				tlist=self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].get_terms()
@@ -118,6 +108,7 @@ class MyApp():
 
 	def del_des(self):
 		""" Deletes the selected element of the listbox for the descriptors"""
+
 		if self.deslistbox.curselection() != ():
 			self.t1.delete_entries(self.deslistbox.get(self.deslistbox.curselection()))
 			self.update_dlist()
@@ -126,6 +117,7 @@ class MyApp():
 
 	def add_des(self):
 		""" Deletes the selected element of the listbox for the relations and terms"""
+
 		self.des = tkSimpleDialog.askstring("Deskriptor hinzufuegen", "Deskriptor:")
 		if self.des is not None:
 			self.t1.create_entries(des)
@@ -134,6 +126,8 @@ class MyApp():
 
 
 	def edit_des(self):
+		"""Opens up a dialog for descriptor editing"""
+
 		self.des = tkSimpleDialog.askstring("Deskriptor bearbeiten", "Bearbeiten:")
 		if self.des is not None:
 			self.t1.edit_entries(self.deslistbox.get(self.deslistbox.curselection()),des)
@@ -142,7 +136,8 @@ class MyApp():
 
 
 	def del_term(self):
-		""" Deletes the selected element of the listbox for the descriptors"""
+		""" Deletes the selected term from the termlist """
+
 		if self.termlistbox.curselection() != ():
 			self.term=self.termlistbox.get(self.termlistbox.curselection())
 			self.term=term.split(" ")
@@ -151,6 +146,8 @@ class MyApp():
 
 
 	def add_term(self):
+		"""Opens up a dialog for term adding"""
+
 		self.term = tkSimpleDialog.askstring("Term hinzufuegen", "Rel Term:")
 		if self.term is not None:
 			self.term=self.term.split(" ")
@@ -160,6 +157,8 @@ class MyApp():
 
 
 	def edit_term(self):
+		"""Opens up a dialog for term/rel editing"""
+
 		self.rel_term=tkSimpleDialog.askstring("Term bearbeiten", "Rel Term")
 		if self.rel_term is not None:
 			self.rel_term=self.rel_term.split(" ")
@@ -173,18 +172,24 @@ class MyApp():
 
 
 	def exit_prog(self):
+		"""Shows the export dialog and exits the program"""
+
 		#tkSimpleDialog
 		self.export()
 		self.MyParent.destroy()
 
+
 	def new_thes(self):
+		"""Clears all entries of the thesaurus"""
 
 		self.t1.entries={}
 		self.update_dlist()
 		self.update_tlist()
 
+
 	def export(self):
-		"""extracts the filetype and calls the real export method if a valid filename is given"""
+		"""Extracts the filetype and calls the real export method if a valid filename is given"""
+
 		self.formats = [
 		('Comma-separated values','*.csv'),
 		('JavaScript Object Notation','*.json'),
@@ -196,8 +201,10 @@ class MyApp():
 		else:
 			print "Keine Datei angegeben."
 
+
 	def importdatei(self):
-		"""extracts the filetype and calls the real import method if a valid filename is given"""
+		"""Extracts the filetype and calls the real import method if a valid filename is given"""
+
 		self.filename = askopenfilename()
 		if len(self.filename)>0:
 			self.t1.import_thesaurus(self.filename)

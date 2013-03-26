@@ -52,7 +52,7 @@ class Descriptor(object):
 		for n, elem in enumerate(self.dict[rel]):
 			if elem == term:
 				self.dict[rel][n] = newterm
-				
+
 	def edit_term_norel(self, term, newterm):
 		"""Searches through all relations and replaces the old term with the corrected term."""
 		for rel in self.dict.keys():
@@ -93,7 +93,6 @@ if __name__ == '__main__':
 	d1.add_term("Pflanze", "OB")
 	d1.add_term("Wurzel", "VB")
 	d1.add_term("Frucht", "UB")
-	#d1.dict["OB"].remove("Wald")
 	d1.remove_term("OB", "Wald")
 	d1.edit_rel("UB", "Frucht", "VB")
 	print d1.get_terms()

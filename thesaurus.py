@@ -1,18 +1,25 @@
 import json, csv
 import os.path
 import xml.etree.ElementTree as ET
-from xml.dom.minidom import parseString
 from descriptor import Descriptor
 
 class Thesaurus(object):
-	"""docstring for Thesaurus"""
+	"""Class for a thesaurus with entries,
+	which are descriptor objects,
+	export/import and connect functionality"""
+
+
 	def __init__(self, name):
+		""" initialize a thesaurus with name
+		and an empty entrie dictonary"""
+
 		self.name = name
 		self.entries = {}
 
 
 	def create_entries(self, setname):
 		"""Creates a new descriptor which is added to the dict "entries" """
+
 		if setname not in self.entries.keys():
 			self.entries[setname] = Descriptor(setname)
 		#else:
@@ -20,6 +27,7 @@ class Thesaurus(object):
 
 	def edit_entries(self, setname, newname):
 		"""Edits the name of a descriptorset."""
+
 		self.entries[newname] = self.entries[setname]
 		self.entries[newname].set_name(newname)
 		for egg in self.entries:
@@ -29,6 +37,7 @@ class Thesaurus(object):
 
 	def delete_entries(self, setname):
 		"""Deletes reference to a set."""
+
 		for object in self.entries:
 			self.entries[object].remove_term_norel(setname)
 		del self.entries[setname]
@@ -37,11 +46,13 @@ class Thesaurus(object):
 		"""	This forwards its variables to add_term and also checks
 		whether a new term has been created successfully.
 		If so, it will create a set for the new term."""
+
 		if self.entries[name].add_term(term, rel):
 			self.create_entries(term)
 
 	def export_thesaurus(self, filename):
 		"""Exports all entries of the thesaurus to JSON, CSV or XML"""
+
 		extension = os.path.splitext(filename)[1]
 		tempdict = {}
 		for  elem in self.entries:
@@ -98,6 +109,7 @@ class Thesaurus(object):
 
 	def import_thesaurus(self, filename):
 		"""Imports thesauri from JSON, CSV or XML and returns a dict"""
+
 		extension = os.path.splitext(filename)[1]
 		if extension == ".json":
 			self.entries={}
@@ -144,6 +156,7 @@ class Thesaurus(object):
 
 	def connect(self):
 		"""Finds relations between descriptorsets and connects them."""
+
 		for entry in self.entries:
 			for rel in self.entries[entry].dict.keys():
 				if rel == "OB":
@@ -163,9 +176,9 @@ class Thesaurus(object):
 						self.add(term, entry, "BS")
 				else:
 					print "There are faulty relations in this thesaurus."
-						
-						
-					
+
+
+
 
 if __name__ == '__main__':
 	t1=Thesaurus("Fahrzeugthesaurus")
@@ -180,25 +193,17 @@ if __name__ == '__main__':
 	t1.add("Fahrrad", "Fortbewegungsmittel", "OB")
 	t1.add("Esel", "Fortbewegungsmittel", "OB")
 	t1.add("Bewegung", "Fortbewegungsmittel", "VB")
-	#print t1.entries["Fahrrad"].add_term("Yes", "OB")
+
 	print t1.entries["Fahrrad"].get_terms()
 	t1.edit_entries("Fortbewegungsmittel", "Transport")
 	print t1.entries["Fahrrad"].get_terms()
 	t1.connect()
 	print t1.entries["Transport"].get_terms()
-	
 
-
-
-
-
-	# # IMPORT/EXPORT
-	# t1.export_thesaurus("JSON", "testfile")
-	# t1.export_thesaurus("CSV", "testfile")
-	# t1.export_thesaurus("XML", "testfile")
-	# t1.import_thesaurus("JSON", "testfile")
-
-	# t1.import_thesaurus("CSV", "testfile")
-	# t1.import_thesaurus("XML", "testfile")
-	# for elem in t1.entries:
-	# 	print elem,":",t1.entries[elem].get_terms()
+	# IMPORT/EXPORT
+	t1.export_thesaurus("testfile.json")
+	t1.export_thesaurus("testfile.csv")
+	t1.export_thesaurus("testfile.xml")
+	t1.import_thesaurus("testfile.json")
+	t1.import_thesaurus("testfile.csv")
+	t1.import_thesaurus("testfile.xml")

@@ -56,10 +56,10 @@ class MyApp():
 		self.edit1_button.grid(row=2, column=0, pady=2, sticky=NW)
 		self.del1_button.grid(row=3, column=0, pady=2, sticky=NW)
 
-		self.deslistbox.grid(row=1, column=1, rowspan=3, sticky=N)
-		self.scrollbar1.grid(row=3, column=2, pady=3, sticky=N)
-		self.termlistbox.grid(row=1,column=3, rowspan=3, sticky=N)
-		self.scrollbar2.grid(row=3,column=4, pady=3, sticky=N)
+		self.deslistbox.grid(row=1, column=1, rowspan=3,pady=5, sticky=NS)
+		self.scrollbar1.grid(row=1, column=2, rowspan=3, pady=5, sticky=NS)
+		self.termlistbox.grid(row=1,column=3, rowspan=3, pady=5, sticky=NS)
+		self.scrollbar2.grid(row=1,column=4, rowspan=3, pady=5, sticky=NS)
 
 		self.add2_button.grid(row=1,column=5, pady=2, sticky=NW)
 		self.edit2_button.grid(row=2,column=5, pady=2, sticky=NW)
@@ -85,7 +85,6 @@ class MyApp():
 		self.deslistbox.delete(0, END)
 		for elem in sorted(self.t1.entries.keys()):
 			self.deslistbox.insert(END, elem)
-		self.deslistbox.select_set(0)
 
 
 	def update_tlist(self):
@@ -100,10 +99,8 @@ class MyApp():
 			for key,value in sorted(tlist.iteritems()):
 				for elem in value:
 					self.termlistbox.insert(END, key + " "+elem)
-			self.termlistbox.select_set(0)
 		else:
 			self.termlistbox.delete(0, END)
-			self.termlistbox.select_set(0)
 
 
 	def del_des(self):
@@ -140,7 +137,7 @@ class MyApp():
 
 		if self.termlistbox.curselection() != ():
 			self.term=self.termlistbox.get(self.termlistbox.curselection())
-			self.term=term.split(" ")
+			self.term=self.term.split(" ")
 			self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].remove_term(self.term[0],self.term[1])
 			self.update_tlist()
 
@@ -172,10 +169,7 @@ class MyApp():
 
 
 	def exit_prog(self):
-		"""Shows the export dialog and exits the program"""
-
-		#tkSimpleDialog
-		self.export()
+		"""Exits the program"""
 		self.MyParent.destroy()
 
 

@@ -2,11 +2,7 @@ uberthesaurus
 =============
 TODO
 ----
-* GUI
 * Expeptions beim Import
-* Docstrings und Kommentare
-* Installationsanleitung
-* Bibliotheken angeben
 
 Features
 --------
@@ -15,3 +11,7 @@ Features
 * Export nach JSON, CSV, XML
 * Import nach JSON, CSV, XML
 * Deskriptorensätze Logik
+* GUI
+* Docstrings und Kommentare
+* Installationsanleitung
+* Bibliotheken angeben

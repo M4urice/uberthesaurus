@@ -120,7 +120,7 @@ class MyApp():
 
 		self.des = tkSimpleDialog.askstring("Deskriptor hinzufuegen", "Deskriptor:")
 		if self.des is not None:
-			self.t1.create_entries(des)
+			self.t1.create_entries(self.des)
 			self.update_dlist()
 			self.update_tlist()
 
@@ -130,7 +130,7 @@ class MyApp():
 
 		self.des = tkSimpleDialog.askstring("Deskriptor bearbeiten", "Bearbeiten:")
 		if self.des is not None:
-			self.t1.edit_entries(self.deslistbox.get(self.deslistbox.curselection()),des)
+			self.t1.edit_entries(self.deslistbox.get(self.deslistbox.curselection()),self.des)
 			self.update_dlist()
 			self.update_tlist()
 

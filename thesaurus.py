@@ -22,8 +22,8 @@ class Thesaurus(object):
 		"""Edits the name of a descriptorset."""
 		self.entries[newname] = self.entries[setname]
 		self.entries[newname].set_name(newname)
-		for object in self.entries:
-			self.entries[object].edit_term_norel(setname, newname)
+		for egg in self.entries:
+			self.entries[egg].edit_term_norel(setname, newname)
 		self.delete_entries(setname)
 
 

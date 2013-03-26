@@ -31,12 +31,12 @@ class MyApp():
 		scrollbar1.config(command=self.deslistbox.yview)
 		scrollbar2.config(command=self.termlistbox.yview)
 		#add buttons for interaktion with des
-		add1_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_window, width=10)
-		edit1_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_window, width=10)
+		add1_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_des, width=10)
+		edit1_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_des, width=10)
 		del1_button=Button(self.MyParent, text="Loeschen", command=self.del_des, width=10)
 		#add buttons for interaktion with terms
-		add2_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_window, width=10)
-		edit2_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_window, width=10)
+		add2_button=Button(self.MyParent, text='Hinzufuegen', command=self.add_term, width=10)
+		edit2_button=Button(self.MyParent, text='Bearbeiten', command=self.edit_term, width=10)
 		del2_button=Button(self.MyParent, text="Loeschen", command=self.del_term, width=10)
 		# confige the spacing
 		self.MyParent.columnconfigure(1, weight=0)
@@ -107,55 +107,75 @@ class MyApp():
 			else:
 				tlist=self.t1.entries[self.deslistbox.get(0)].get_terms()
 			self.termlistbox.delete(0, END)
-			for key,value in tlist.iteritems():
+			for key,value in sorted(tlist.iteritems()):
 				for elem in value:
 					self.termlistbox.insert(END, key + " "+elem)
 			self.termlistbox.select_set(0)
 
 
-	def add_window(self):
-		tkSimpleDialog.askstring("Hinzufuegen", "Hinzufuegen:")
-		
-	def edit_window(self):
-		tkSimpleDialog.askstring("Bearbeiten", "Bearbeiten:")
-
-
 	def del_des(self):
 		""" Deletes the selected element of the listbox for the descriptors"""
 		if self.deslistbox.curselection() != ():
-			self.deslistbox.delete(self.deslistbox.curselection())
-			#self.t1.entries.removedes(self.deslistbox.index(self.deslistbox.curselection()))
+			self.t1.delete_entries(self.deslistbox.get(self.deslistbox.curselection()))
+			self.update_dlist()
+			self.update_tlist()
 
 
-	def add_des(self,des):
+	def add_des(self):
 		""" Deletes the selected element of the listbox for the relations and terms"""
-		self.deslistbox.insert(END, des)
+		des = tkSimpleDialog.askstring("Deskriptor hinzufuegen", "Deskriptor:")
+		if des is not None:
+			self.t1.create_entries(des)
+			self.update_dlist()
+			self.update_tlist()
 
 
 	def edit_des(self):
-		pass
+		des = tkSimpleDialog.askstring("Deskriptor bearbeiten", "Bearbeiten:")
+		if des is not None:
+			self.t1.edit_entries(self.deslistbox.get(self.deslistbox.curselection()),des)
+			self.update_dlist()
+			self.update_tlist()
 
 
 	def del_term(self):
 		""" Deletes the selected element of the listbox for the descriptors"""
 		if self.termlistbox.curselection() != ():
-			self.termlistbox.delete(self.termlistbox.curselection())
+			term=self.termlistbox.get(self.termlistbox.curselection())
+			term=term.split(" ")
+			self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].remove_term(term[0],term[1])
+			self.update_tlist()
 
 
-	def add_term(self,des):
-		pass
+	def add_term(self):
+		term = tkSimpleDialog.askstring("Term hinzufuegen", "Rel:Term:")
+		if term is not None:
+			term=term.split(":")
+			self.t1.add(self.deslistbox.get(self.deslistbox.curselection()), term[1], term[0])
+			self.update_dlist()
+			self.update_tlist()
 
 
 	def edit_term(self):
-		pass
-
+		rel_term=tkSimpleDialog.askstring("Term bearbeiten", "Rel:Term")
+		if rel_term is not None:
+			rel_term=rel_term.split(":")
+			rel_term_old=self.termlistbox.get(self.termlistbox.curselection()).split(" ")
+			if rel_term[0]!=rel_term_old[0]:
+				self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].edit_rel(str(rel_term_old[0]), str(rel_term_old[1]), str(rel_term[0]))
+			if rel_term[1]!=rel_term_old[1]:
+				self.t1.entries[self.deslistbox.get(self.deslistbox.curselection())].edit_term(str(rel_term_old[0]), str(rel_term_old[1]), str(rel_term[1]))
+			self.update_dlist()
+			self.update_tlist()
 
 	def exit_prog(self):
+		#tkSimpleDialog
 		self.export()
 		self.MyParent.destroy()
 
 
 	def export(self):
+		"""extracts the filetype and calls the real export method if a valid filename is given"""
 		formats = [
 		('Comma-separated values','*.csv'),
 		('JavaScript Object Notation','*.json'),
@@ -168,15 +188,13 @@ class MyApp():
 			print "Keine Datei angegeben."
 
 	def importdatei(self):
+		"""extracts the filetype and calls the real import method if a valid filename is given"""
 		self.filename = askopenfilename()
 		if len(self.filename)>0:
 			self.t1.import_thesaurus(self.filename)
 			self.update_dlist()
 		else:
 			print "Keine Datei angegeben."
-
-
-
 
 
 if __name__ == '__main__':

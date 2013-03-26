@@ -4,7 +4,6 @@ TODO
 ----
 * GUI
 * Expeptions beim Import
-* Deskriptorensätze Logik
 * Docstrings und Kommentare
 * Installationsanleitung
 * Bibliotheken angeben
@@ -15,3 +14,4 @@ Features
 * Terme einfügen, löschen, bearbeiten
 * Export nach JSON, CSV, XML
 * Import nach JSON, CSV, XML
+* Deskriptorensätze Logik

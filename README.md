@@ -3,6 +3,7 @@ uberthesaurus
 TODO
 ----
 * Expeptions beim Import
+* Besserer Dialog beim Bearbeiten und Erstellen von Relationen
 
 Features
 --------

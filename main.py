@@ -15,12 +15,13 @@ class MyApp():
 
 		#self.MyParent of MyApp
 		self.MyParent = parent
+
 		# import a thesaurus if given as an argument or create an empty one
 		if thes is "":
-			self.t1=Thesaurus("Thesaurusname")
+			self.t1=Thesaurus("Neuer Thesaurus")
 		else:
 			self.t1=thes
-
+		self.MyParent.title("uberthesaurus - %s"% self.t1.name)
 		# scrollbars for the listboxes
 		self.scrollbar1 = Scrollbar(self.MyParent, orient=VERTICAL)
 		self.scrollbar2 = Scrollbar(self.MyParent, orient=VERTICAL)
@@ -179,6 +180,8 @@ class MyApp():
 		self.t1.entries={}
 		self.update_dlist()
 		self.update_tlist()
+		self.t1.name="Neuer Thesaurus"
+		self.MyParent.title("uberthesaurus - %s"% self.t1.name)
 
 
 	def export(self):
@@ -192,6 +195,7 @@ class MyApp():
 		self.filename = asksaveasfilename(filetypes=self.formats, title="Den Thesaurus exportieren", defaultextension=".xml")
 		if len(self.filename)>0:
 			self.t1.export_thesaurus(self.filename)
+			self.MyParent.title("uberthesaurus - %s"% self.t1.name)
 		else:
 			print "Keine Datei angegeben."
 
@@ -203,12 +207,13 @@ class MyApp():
 		if len(self.filename)>0:
 			self.t1.import_thesaurus(self.filename)
 			self.update_dlist()
+			self.MyParent.title("uberthesaurus - %s"% self.t1.name)
 		else:
 			print "Keine Datei angegeben."
 
 
 if __name__ == '__main__':
-	t1=Thesaurus("Fahrzeugthesaurus")
+	#t1=Thesaurus("Neuer Thesaurus")
 	root= Tk()
-	myapp = MyApp(root,t1)
+	myapp = MyApp(root)#,t1)
 	root.mainloop()

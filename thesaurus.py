@@ -65,13 +65,13 @@ class Thesaurus(object):
 			with open(filename,"w") as json_output:
 				#indent=5 for pretty print
 				json.dump(tempdict, json_output, sort_keys=True, indent=5)
-
+			self.name=filename
 		elif extension == ".csv":
 			with open(filename, 'w') as csv_output:
 					writer = csv.writer(csv_output, delimiter=";")
 					writer.writerow(tempdict.keys())
 					writer.writerow(tempdict.values())
-
+			self.name=filename
 		elif extension == ".xml" or extension == ".xhtml":
 			entries = ET.Element( "data")
 			for name, terms in tempdict.iteritems():
@@ -88,7 +88,7 @@ class Thesaurus(object):
 			tree = ET.ElementTree(entries)
 
 			tree.write(filename)
-
+			self.name=filename
 		else:
 			print "Fehler! Unbekanntes Format!"
 
@@ -124,7 +124,7 @@ class Thesaurus(object):
 						for rel,termlist in descr.iteritems():
 							for term in termlist:
 								self.entries[entr].add_term(term, rel)
-
+			self.name=filename
 
 		elif extension == ".csv":
 			self.entries={}
@@ -142,6 +142,7 @@ class Thesaurus(object):
 							terms=elem[1].split(",")
 							for term in terms:
 								self.add(row1[i], term, rel)
+			self.name=filename
 
 		elif extension == ".xml" or extension== ".xhtml":
 			self.entries={}
@@ -152,7 +153,7 @@ class Thesaurus(object):
 				for relation in descriptor:
 					for term in relation:
 						self.add(descriptor.attrib.values()[0], term.text, relation.attrib.values()[0])
-
+			self.name=filename
 		else:
 			print "Fehler! Unbekanntes Format!"
 
